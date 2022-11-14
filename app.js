@@ -80,7 +80,9 @@ app.get('/enterNewEmployee', (req, res) => {
 });
 
 app.get('/listEmployee', (req, res) => {
-	res.render('listEmployee');
+	let employee = {};
+	employee = null;
+	res.render('listEmployee', {employee});
 });
 
 app.get('/listAllEmployees', (req, res) => {
@@ -96,6 +98,7 @@ app.get('/deleteEmployee', (req, res) => {
 });
 
 
+// 8 - POST Methods
 app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 	
 	var date = new Date();
@@ -123,13 +126,31 @@ app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 			console.log(err);
 		} else {
 			// alert("Employee successfully added!");
-			res.redirect('/employee');
+			res.render('/employee');
 		}
 	})
 });
 
+app.post('/showSingleEmployee', async (req, res) => {
 
-// 8 - POST Methods
+	let id = req.body.employeeId;
+
+	let employee = await employeeSchema.find({customId: id}).exec();
+
+	res.render('listEmployee', {employee});
+});
+
+
+//Beispiel Auflistung einzeln / alle
+// app.post('/back', async (req, res) => {
+	// 	let user = await userModel.findById(req.session.userid).exec();
+	
+	// 	let images = await imageModel.find({userID: req.session.userid}).exec();
+	
+	// 	let texts = await textModel.find({userID: req.session.userid}).exec();
+	
+	// 	res.render('profile', {user: user, images: images, texts: texts});
+	// })
 
 // Beispiel für Create
 // app.post('/register', upload.single('user'), (req, res) => {
@@ -161,16 +182,6 @@ app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 // 	});
 // });
 
-//Beispiel Auflistung einzeln / alle
-// app.post('/back', async (req, res) => {
-	// 	let user = await userModel.findById(req.session.userid).exec();
-	
-	// 	let images = await imageModel.find({userID: req.session.userid}).exec();
-	
-	// 	let texts = await textModel.find({userID: req.session.userid}).exec();
-	
-	// 	res.render('profile', {user: user, images: images, texts: texts});
-	// })
 	
 	
 	//Beispiel Änderung von Daten
