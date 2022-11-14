@@ -61,33 +61,71 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 // 6 - Mongoose Models
-var testModel = require('./model/test');
+// var testModel = require('./model/test');
+var employeeSchema = require('./model/employee');
 const { PRIORITY_ABOVE_NORMAL } = require('constants');
 const { json } = require('body-parser');
 
 // 7 - GET Methods
 app.get('/', (req, res) => {
-	req.
 	res.render('welcome');
 });
 
-app.post('/test', upload.single('test'), (req, res) => {
+app.get('/employee', (req, res) => {
+	res.render('employee');
+});
 
-	// let localTestString = req.body.randomString;
+app.get('/enterNewEmployee', (req, res) => {
+	res.render('enterNewEmployee');
+});
 
-	testObj = {
-		testString: req.body.randomString
+app.get('/listEmployee', (req, res) => {
+	res.render('listEmployee');
+});
+
+app.get('/listAllEmployees', (req, res) => {
+	res.render('listAllEmployees');
+});
+
+app.get('/editEmployee', (req, res) => {
+	res.render('editEmployee');
+});
+
+app.get('/deleteEmployee', (req, res) => {
+	res.render('deleteEmployee');
+});
+
+
+app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
+	
+	var date = new Date();
+	var current_validity_date = new Date(date.setMonth(date.getMonth()+4));
+
+	let employeeObj = {
+		customId: req.body.customId,
+		validity_date: current_validity_date,
+		active: true,
+		salutation: req.body.salutation,
+		name: req.body.name,
+		surname: req.body.surname,
+		street: req.body.street,
+		street_number: req.body.street_number,
+		place: req.body.place,
+		plz: req.body.plz,
+		email: req.body.email,
+		tel_number: req.body.tel_number,
+		departement: req.body.departement,
+		short_name: req.body.short_name
 	}
 
-	testModel.create(testObj, (err) => {
+	employeeSchema.create(employeeObj, (err) => {
 		if(err) {
-			// console.log('help');
 			console.log(err);
 		} else {
-			console.log(testObj.testString);
-			res.redirect('/');
+			// alert("Employee successfully added!");
+			res.redirect('/employee');
 		}
-	});
+	})
 });
 
 
@@ -96,12 +134,12 @@ app.post('/test', upload.single('test'), (req, res) => {
 // Beispiel für Create
 // app.post('/register', upload.single('user'), (req, res) => {
 
-//     var today = new Date();
-
-//     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-
-// 	var userObj = {
-//         email: req.body.email,
+	//     var today = new Date();
+	
+	//     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+	
+	// 	var userObj = {
+		//         email: req.body.email,
 // 		username: req.body.username,
 // 		password: req.body.password,
 //         joindate: date,
@@ -109,15 +147,15 @@ app.post('/test', upload.single('test'), (req, res) => {
 // 		secret: '',
 //         profileImg:
 //         {
-//             data: null,
-//             contentType: date
-//         }
-// 	}
-// 	userModel.create(userObj, (err) => {
-// 		if (err) {
-// 			console.log(err);
-// 		}
-// 		else {
+	//             data: null,
+	//             contentType: date
+	//         }
+	// 	}
+	// 	userModel.create(userObj, (err) => {
+		// 		if (err) {
+			// 			console.log(err);
+			// 		}
+			// 		else {
 // 			res.redirect('/');
 // 		}
 // 	});
@@ -125,45 +163,63 @@ app.post('/test', upload.single('test'), (req, res) => {
 
 //Beispiel Auflistung einzeln / alle
 // app.post('/back', async (req, res) => {
-// 	let user = await userModel.findById(req.session.userid).exec();
+	// 	let user = await userModel.findById(req.session.userid).exec();
+	
+	// 	let images = await imageModel.find({userID: req.session.userid}).exec();
+	
+	// 	let texts = await textModel.find({userID: req.session.userid}).exec();
+	
+	// 	res.render('profile', {user: user, images: images, texts: texts});
+	// })
+	
+	
+	//Beispiel Änderung von Daten
+	// app.post('/changeProfilePicture', upload.single('image'), async (req, res) => {
+		
+		// 	let userId = req.session.userid;
+		
+		// 	console.log(req.file);
 
-// 	let images = await imageModel.find({userID: req.session.userid}).exec();
-
-// 	let texts = await textModel.find({userID: req.session.userid}).exec();
-
-// 	res.render('profile', {user: user, images: images, texts: texts});
-// })
-
-
-//Beispiel Änderung von Daten
-// app.post('/changeProfilePicture', upload.single('image'), async (req, res) => {
-
-// 	let userId = req.session.userid;
-
-// 	console.log(req.file);
-
-// 	let data = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename));
-
-// 	let update = {profileImg:{
-// 		data: data,
-// 		contentType: req.file.mimetype
-// 	}}
-
-// 	let user = await userModel.findOneAndUpdate(userId, update, {
-// 		new: true
-// 	});
-
-// 	//let user = await userModel.findOne({ username: req.session.username, password: req.session.password});
-// 	let images = await imageModel.find({userID: req.session.userid}).exec();
-// 	let texts = await textModel.find({userID: req.session.userid}).exec();
-
-// 	res.render('profile', {user: user, images: images, texts: texts});
-// })
-
-
-
-// Schritt 9 - Den Server port setzen
-var port = process.env.PORT || '3000'
+		// 	let data = fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename));
+		
+		// 	let update = {profileImg:{
+			// 		data: data,
+			// 		contentType: req.file.mimetype
+			// 	}}
+			
+			// 	let user = await userModel.findOneAndUpdate(userId, update, {
+				// 		new: true
+				// 	});
+				
+				// 	//let user = await userModel.findOne({ username: req.session.username, password: req.session.password});
+				// 	let images = await imageModel.find({userID: req.session.userid}).exec();
+				// 	let texts = await textModel.find({userID: req.session.userid}).exec();
+				
+				// 	res.render('profile', {user: user, images: images, texts: texts});
+				// })
+				
+				// app.post('/test', upload.single('test'), (req, res) => {
+				
+				// 	// let localTestString = req.body.randomString;
+				
+				// 	testObj = {
+				// 		testString: req.body.randomString
+				// 	}
+				
+				// 	testModel.create(testObj, (err) => {
+				// 		if(err) {
+				// 			// console.log('help');
+				// 			console.log(err);
+				// 		} else {
+				// 			console.log(testObj.testString);
+				// 			res.redirect('/');
+				// 		}
+				// 	});
+				// });
+				
+				
+				// Schritt 9 - Den Server port setzen
+				var port = process.env.PORT || '3000'
 app.listen(port, err => {
 	if (err)
 		throw err
