@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 var testSchema = new mongoose.Schema({
-    testString: String
+    test_string: String
 });
 
 // Image ist das model mit dem schema imageSchema
