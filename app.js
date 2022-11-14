@@ -126,16 +126,19 @@ app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 			console.log(err);
 		} else {
 			// alert("Employee successfully added!");
-			res.render('/employee');
+			res.redirect('/employee');
 		}
 	})
 });
 
 app.post('/showSingleEmployee', async (req, res) => {
-
 	let id = req.body.employeeId;
 
-	let employee = await employeeSchema.find({customId: id}).exec();
+	console.log(id);
+
+	let employee = await employeeSchema.findOne({customId: id});
+
+	console.log(employee);
 
 	res.render('listEmployee', {employee});
 });
