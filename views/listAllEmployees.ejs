@@ -5,8 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
 </head>
 <body>
+
+    <% if(allUsers != null) {%>
+
+        <% for(var i = 0; i < allUsers.length; i++) {%>
+
+        
+
+        <label for="customId">CustomId</label><br>
+        <input readonly type="text" name="customId" value="<%= allUsers[i].customId %>"><br><br> 
+            
+        <label for="salutation">Salutation</label><br>
+        <input readonly type="text" name="salutation" value="<%= allUsers[i].salutation %>"><br><br>
+        
+        <label for="name">Name</label><br>
+        <input readonly type="text" name="name" value="<%= allUsers[i].name %>"><br><br>
+        
+        <label for="surname">Surname</label><br>
+        <input readonly type="text" name="surname" value="<%= allUsers[i].surname %>"><br><br>
+        
+        <label for="street">Street</label><br>
+        <input readonly type="text" name="street" value="<%= allUsers[i].street %>"><br><br>
+        
+        <label for="street_number">Street Number</label><br>
+        <input readonly type="number" name="street_number" value="<%= allUsers[i].street_number %>"><br><br>
+        
+        <label for="place">Place</label><br>
+        <input readonly type="text" name="place" value="<%= allUsers[i].place %>"><br><br>
+        
+        <label for="plz">PLZ</label><br>
+        <input readonly type="number" name="plz" value="<%= allUsers[i].plz %>"><br><br>
+
+        <label for="email">E-Mail</label><br>
+        <input readonly type="text" name="email" value="<%= allUsers[i].email %>"><br><br>
+    
+        <label for="tel_number">Tel. Number</label><br>
+        <input readonly type="text" name="tel_number" value="<%= allUsers[i].tel_number %>"><br><br>
+    
+        <label for="departement">Departement</label><br>
+        <input readonly type="text" name="departement" value="<%= allUsers[i].departement %>"><br><br>
+    
+        <label for="short_name">Short Name</label><br>
+        <input readonly type="text" name="short_name" value="<%= allUsers[i].short_name %>"><br><br>
+        <br><br><br><br>
+        <%  } %>
+    
+    <% } %>
     
 </body>
 </html>

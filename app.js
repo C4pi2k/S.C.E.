@@ -85,8 +85,10 @@ app.get('/listEmployee', (req, res) => {
 	res.render('listEmployee', {employee});
 });
 
-app.get('/listAllEmployees', (req, res) => {
-	res.render('listAllEmployees');
+app.get('/listAllEmployees', async (req, res) => {
+	let filter = {};
+	let allUsers = await employeeSchema.find(filter);
+	res.render('listAllEmployees', {allUsers});
 });
 
 app.get('/editEmployee', (req, res) => {
