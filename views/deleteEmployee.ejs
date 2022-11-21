@@ -5,8 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
 </head>
 <body>
-    
+    <form action="/employee" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+        <form action="/deleteEmployee" method="post">
+            <label>Delete an employee by Id</label><br>
+            <input type="number" name="employeeId"><br><br>
+            <button type="submit">Delete</button>
+        </form>
+    </div>
 </body>
 </html>

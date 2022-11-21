@@ -145,6 +145,18 @@ app.post('/showSingleEmployee', async (req, res) => {
 	res.render('listEmployee', {employee});
 });
 
+app.post('/deleteEmployee', async (req, res) => {
+	let id = req.body.employeeId;
+
+	console.log(id);
+
+	let employee = await employeeSchema.deleteOne({customId: id});
+
+	console.log(employee);
+
+	res.redirect('/employee');
+});
+
 
 //Beispiel Auflistung einzeln / alle
 // app.post('/back', async (req, res) => {
