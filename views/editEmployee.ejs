@@ -5,8 +5,71 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
 </head>
 <body>
+    <form action="/employee" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+        <% if(employee == null) {%>
+            <form action="/showEditableEmployee" method="post">
+                <label>Search for an employee by Id to edit its data</label><br>
+                <input type="number" name="employeeId"><br><br>
+                <button type="submit">Search</button>
+            </form>
+        <%}%>
+
+        <% if(employee != null) {%>
+            <form action="/showEditableEmployee" method="post">
+                <label>Search for an employee by Id to edit its data</label><br>
+                <input type="number" name="employeeId" value="<%= employee.customId%>"><br><br>
+                <button type="submit">Search</button>
+            </form>
+        <%}%>
+        
+        <% if(employee != null) {%>
+            
+        <form action="/editEmployee" method="post">
+
+            <input hidden type="number" name="employeeId" value="<%= employee.customId %>">
     
+            <label for="salutation">Salutation</label><br>
+            <input type="text" name="salutation" value="<%= employee.salutation %>"><br><br>
+            
+            <label for="name">Name</label><br>
+            <input type="text" name="name" value="<%= employee.name %>"><br><br>
+            
+            <label for="surname">Surname</label><br>
+            <input type="text" name="surname" value="<%= employee.surname %>"><br><br>
+            
+            <label for="street">Street</label><br>
+            <input type="text" name="street" value="<%= employee.street %>"><br><br>
+            
+            <label for="street_number">Street Number</label><br>
+            <input type="number" name="street_number" value="<%= employee.street_number %>"><br><br>
+            
+            <label for="place">Place</label><br>
+            <input type="text" name="place" value="<%= employee.place %>"><br><br>
+            
+            <label for="plz">PLZ</label><br>
+            <input type="number" name="plz" value="<%= employee.plz %>"><br><br>
+
+            <label for="email">E-Mail</label><br>
+            <input type="text" name="email" value="<%= employee.email %>"><br><br>
+        
+            <label for="tel_number">Tel. Number</label><br>
+            <input type="text" name="tel_number" value="<%= employee.tel_number %>"><br><br>
+        
+            <label for="departement">Departement</label><br>
+            <input type="text" name="departement" value="<%= employee.departement %>"><br><br>
+
+            <label for="short_name">Short Name</label><br>
+            <input type="text" name="short_name" value="<%= employee.short_name %>"><br><br>
+
+            <button type="submit">Edit</button>
+        </form>
+        <% } %>
+    </div>    
 </body>
 </html>

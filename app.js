@@ -92,7 +92,9 @@ app.get('/listAllEmployees', async (req, res) => {
 });
 
 app.get('/editEmployee', (req, res) => {
-	res.render('editEmployee');
+	let employee = {};
+	employee = null;
+	res.render('editEmployee', {employee});
 });
 
 app.get('/deleteEmployee', (req, res) => {
@@ -136,7 +138,7 @@ app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 app.post('/showSingleEmployee', async (req, res) => {
 	let id = req.body.employeeId;
 
-	console.log(id);
+	// console.log(id);
 
 	let employee = await employeeSchema.findOne({customId: id});
 
@@ -145,14 +147,85 @@ app.post('/showSingleEmployee', async (req, res) => {
 	res.render('listEmployee', {employee});
 });
 
+app.post('/showEditableEmployee', async (req, res) => {
+	let id = req.body.employeeId;
+
+	// console.log(id);
+
+	let employee = await employeeSchema.findOne({customId: id});
+
+	console.log(employee);
+
+	res.render('editEmployee', {employee});
+});
+
 app.post('/deleteEmployee', async (req, res) => {
 	let id = req.body.employeeId;
 
-	console.log(id);
+	// console.log(id);
 
 	let employee = await employeeSchema.deleteOne({customId: id});
 
 	console.log(employee);
+
+	res.redirect('/employee');
+});
+
+app.post('/showSingleEmployeeToEdit', async (req, res) => {
+	let id = req.body.employeeId;
+
+	console.log(id);
+
+	let employee = await employeeSchema.findOne({customId: id});
+
+	// console.log(employee);
+
+	res.render('editEmployee', {employee});
+});
+
+app.post('/editEmployee', async (req, res) => {
+
+	let id = req.body.employeeId;
+	let salutation = req.body.salutation;
+	let name = req.body.name;
+	let surname = req.body.surname;
+	let street = req.body.street;
+	let street_number = req.body.street_number;
+	let place = req.body.place;
+	let plz = req.body.plz;
+	let email = req.body.email;
+	let tel_number = req.body.tel_number;
+	let departement = req.body.departement;
+	let short_name = req.body.short_name;
+
+	let filter = { customId: id };
+
+	let update = { 
+		salutation: salutation,
+		name: name,
+		surname: surname,
+		street: street,
+		street_number: street_number,
+		place: place,
+		plz: plz,
+		email: email,
+		tel_number: tel_number,
+		departement: departement,
+		short_name: short_name
+	};
+
+	console.log(id);
+	console.log(name);
+
+	let updateEmployee = await employeeSchema.findOneAndUpdate(filter, update, {
+		new: false
+	});
+
+	// console.log(id);
+
+	// let employee = await employeeSchema.deleteOne({customId: id});
+
+	// console.log(employee);
 
 	res.redirect('/employee');
 });
