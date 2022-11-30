@@ -190,7 +190,7 @@ app.post('/showEditableEmployee', async (req, res) => {
 
 	console.log(employee);
 
-	res.render('editEmployee', {employee});
+	res.render('employee/editEmployee', {employee});
 });
 
 app.post('/deleteEmployee', async (req, res) => {
