@@ -178,7 +178,7 @@ app.post('/showSingleEmployee', async (req, res) => {
 
 	console.log(employee);
 
-	res.render('listEmployee', {employee});
+	res.render('employee/listEmployee', {employee});
 });
 
 app.post('/showEditableEmployee', async (req, res) => {
