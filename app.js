@@ -372,6 +372,18 @@ app.post('/editCustomer', async (req, res) => {
 	res.redirect('/customer');
 });
 
+app.post('/deleteCustomer', async (req, res) => {
+	let id = req.body.customerId;
+
+	// console.log(id);
+
+	let customer = await customerSchema.deleteOne({customId: id});
+
+	console.log(customer);
+
+	res.redirect('/customer');
+});
+
 // POST CUSTOMER END
 
 
