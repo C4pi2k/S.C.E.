@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/customer" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+        <form action="/showSingleCustomer" method="post">
+            <label>Search for an customer by Id</label><br>
+            <input type="number" name="customerId"><br><br>
+            <button type="submit">Search</button><br><br><br>
+        </form>
+
+        <% if(customer != null) {%>
+            
+            <label for="salutation">Salutation</label><br>
+            <input readonly type="text" name="salutation" value="<%= customer.salutation %>"><br><br>
+            
+            <label for="name">Name</label><br>
+            <input readonly type="text" name="name" value="<%= customer.name %>"><br><br>
+            
+            <label for="surname">Surname</label><br>
+            <input readonly type="text" name="surname" value="<%= customer.surname %>"><br><br>
+            
+            <label for="street">Street</label><br>
+            <input readonly type="text" name="street" value="<%= customer.street %>"><br><br>
+            
+            <label for="street_number">Street Number</label><br>
+            <input readonly type="number" name="street_number" value="<%= customer.street_number %>"><br><br>
+            
+            <label for="place">Place</label><br>
+            <input readonly type="text" name="place" value="<%= customer.place %>"><br><br>
+            
+            <label for="plz">PLZ</label><br>
+            <input readonly type="number" name="plz" value="<%= customer.plz %>"><br><br>
+
+            <label for="email">E-Mail</label><br>
+            <input readonly type="text" name="email" value="<%= customer.email %>"><br><br>
+        
+            <label for="tel_number">Tel. Number</label><br>
+            <input readonly type="text" name="tel_number" value="<%= customer.tel_number %>"><br><br>
+        
+            <label for="comment">Departement</label><br>
+            <input readonly type="text" name="comment" value="<%= customer.comment %>"><br><br>
+        
+            <label for="company_suffix">Short Name</label><br>
+            <input readonly type="text" name="company_suffix" value="<%= customer.company_suffix %>"><br><br>
+        <% } %>
+    </div>
+    
+</body>
+</html>

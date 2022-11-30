@@ -301,6 +301,18 @@ app.post('/uploadNewCustomer', upload.single('customer'), (req, res) => {
 	})
 });
 
+app.post('/showSingleCustomer', async (req, res) => {
+	let id = req.body.customerId;
+
+	// console.log(id);
+
+	let customer = await customerSchema.findOne({customId: id});
+
+	// console.log(customer);
+
+	res.render('customer/listCustomer', {customer});
+});
+
 // POST CUSTOMER END
 
 
