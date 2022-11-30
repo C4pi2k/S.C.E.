@@ -313,6 +313,65 @@ app.post('/showSingleCustomer', async (req, res) => {
 	res.render('customer/listCustomer', {customer});
 });
 
+app.post('/showEditableCustomer', async (req, res) => {
+	let id = req.body.customerId;
+
+	// console.log(id);
+
+	let customer = await customerSchema.findOne({customId: id});
+
+	// console.log(customer);
+
+	res.render('customer/editCustomer', {customer});
+});
+
+app.post('/editCustomer', async (req, res) => {
+
+	let id = req.body.customerId;
+	let salutation = req.body.salutation;
+	let name = req.body.name;
+	let surname = req.body.surname;
+	let street = req.body.street;
+	let street_number = req.body.street_number;
+	let place = req.body.place;
+	let plz = req.body.plz;
+	let email = req.body.email;
+	let tel_number = req.body.tel_number;
+	let comment = req.body.comment;
+	let company_suffix = req.body.company_suffix;
+
+	let filter = { customId: id };
+
+	let update = { 
+		salutation: salutation,
+		name: name,
+		surname: surname,
+		street: street,
+		street_number: street_number,
+		place: place,
+		plz: plz,
+		email: email,
+		tel_number: tel_number,
+		comment: comment,
+		company_suffix: company_suffix
+	};
+
+	console.log(id);
+	console.log(name);
+
+	let updateCustomer = await customerSchema.findOneAndUpdate(filter, update, {
+		new: false
+	});
+
+	// console.log(id);
+
+	// let employee = await employeeSchema.deleteOne({customId: id});
+
+	// console.log(employee);
+
+	res.redirect('/customer');
+});
+
 // POST CUSTOMER END
 
 
