@@ -72,7 +72,7 @@ app.get('/', (req, res) => {
 	res.render('welcome');
 });
 
-//EMPLOYEE START
+// GET EMPLOYEE START
 app.get('/employee', (req, res) => {
 	res.render('employee/employee');
 });
@@ -102,9 +102,9 @@ app.get('/editEmployee', (req, res) => {
 app.get('/deleteEmployee', (req, res) => {
 	res.render('employee/deleteEmployee');
 });
-//EMPLOYEE END
-
-//CUSTOMER START
+// GET EMPLOYEE END
+//-------------------------------------------------------------------------//
+// GET CUSTOMER START
 app.get('/customer', (req, res) => {
 	res.render('customer/customer');
 });
@@ -134,9 +134,10 @@ app.get('/editcustomer', (req, res) => {
 app.get('/deletecustomer', (req, res) => {
 	res.render('customer/deletecustomer');
 });
-//CUSTOMER END
+// GET CUSTOMER END
 //-------------------------------------------------------------------------//
 // 8 - POST Methods
+// POST EMPLOYEE START
 app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 	
 	var date = new Date();
@@ -263,6 +264,10 @@ app.post('/editEmployee', async (req, res) => {
 
 	res.redirect('/employee');
 });
+
+// POST EMPLOYEE END
+//-------------------------------------------------------------------------//
+// POST CUSTOMER START
 
 
 //Beispiel Auflistung einzeln / alle
