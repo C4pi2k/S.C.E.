@@ -105,6 +105,7 @@ app.get('/deleteEmployee', (req, res) => {
 });
 // GET EMPLOYEE END
 //-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
 // GET CUSTOMER START
 app.get('/customer', (req, res) => {
 	res.render('customer/customer');
@@ -137,6 +138,39 @@ app.get('/deletecustomer', (req, res) => {
 });
 // GET CUSTOMER END
 //-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
+// GET PRODUCT START
+app.get('/product', (req, res) => {
+	res.render('product/product');
+});
+
+app.get('/enterNewproduct', (req, res) => {
+	res.render('product/enterNewproduct');
+});
+
+app.get('/listproduct', (req, res) => {
+	let product = {};
+	product = null;
+	res.render('product/listproduct', {custproductomer});
+});
+
+app.get('/listAllproduct', async (req, res) => {
+	let filter = {};
+	let allProduct = await productSchema.find(filter);
+	res.render('product/listAllproduct', {allProduct});
+});
+
+app.get('/editproduct', (req, res) => {
+	let product = {};
+	product = null;
+	res.render('product/editproduct', {product});
+});
+
+app.get('/deleteproduct', (req, res) => {
+	res.render('product/deleteproduct');
+});
+// GET PRODUCT END
+
 // 8 - POST Methods
 // POST EMPLOYEE START
 app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
@@ -268,6 +302,7 @@ app.post('/deleteEmployee', async (req, res) => {
 
 // POST EMPLOYEE END
 //-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
 // POST CUSTOMER START
 
 app.post('/uploadNewCustomer', upload.single('customer'), (req, res) => {
@@ -386,7 +421,34 @@ app.post('/deleteCustomer', async (req, res) => {
 });
 
 // POST CUSTOMER END
+//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
+// POST PRODUCT START
 
+app.post('/uploadNewProduct', upload.single('product'), (req, res) => {
+	
+	let productObj = {
+		customId: req.body.customId,
+		storage_location: req.body.storage_location,
+		name: req.body.name,
+		producer: req.body.producer,
+		article_description: req.body.article_description,
+		stock_amount: req.body.stock_amount,
+		price: req.body.price,
+		minimum_stock: req.body.minimum_stock
+	}
+
+	productSchema.create(productObj, (err) => {
+		if(err) {
+			console.log(err);
+		} else {
+			// alert("Employee successfully added!");
+			res.redirect('/product');
+		}
+	})
+});
+
+// POST PRODUCT END
 
 //Beispiel Auflistung einzeln / alle
 // app.post('/back', async (req, res) => {

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/product" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+
+    <form action="uploadNewProduct" method="post">
+        <label for="customId">Custom ID</label><br>
+        <input type="number" name="customId"><br><br>
+
+        <label for="storage_location">Storage Location</label><br>
+        <input type="text" name="storage_location"><br><br>
+
+        <label for="name">Name</label><br>
+        <input type="text" name="name"><br><br>
+
+        <label for="producer">Producer</label><br>
+        <input type="text" name="producer"><br><br>
+
+        <label for="article_description">Article Description</label><br>
+        <input type="text" name="article_description"><br><br>
+
+        <label for="stock_amount">Stock Amount</label><br>
+        <input type="number" name="stock_amount"><br><br>
+
+        <label for="price">Price</label><br>
+        <input type="number" name="price"><br><br>
+
+        <label for="minimum_stock">Minimum Stock</label><br>
+        <input type="number" name="minimum_stock"><br><br>
+
+        <button type="submit">Add new product</button>
+    </form>       
+    </div>
+</body>
+</html>
