@@ -269,6 +269,40 @@ app.post('/editEmployee', async (req, res) => {
 //-------------------------------------------------------------------------//
 // POST CUSTOMER START
 
+app.post('/uploadNewCustomer', upload.single('customer'), (req, res) => {
+	
+	var date = new Date();
+	var current_validity_date = new Date(date.setMonth(date.getMonth()+4));
+
+	let customerObj = {
+		customId: req.body.customId,
+		validity_date: current_validity_date,
+		active: true,
+		salutation: req.body.salutation,
+		name: req.body.name,
+		surname: req.body.surname,
+		street: req.body.street,
+		street_number: req.body.street_number,
+		place: req.body.place,
+		plz: req.body.plz,
+		email: req.body.email,
+		tel_number: req.body.tel_number,
+		comment: req.body.comment,
+		company_suffix: req.body.company_suffix
+	}
+
+	customerSchema.create(customerObj, (err) => {
+		if(err) {
+			console.log(err);
+		} else {
+			// alert("Employee successfully added!");
+			res.redirect('/customer');
+		}
+	})
+});
+
+// POST CUSTOMER END
+
 
 //Beispiel Auflistung einzeln / alle
 // app.post('/back', async (req, res) => {
