@@ -72,33 +72,33 @@ app.get('/', (req, res) => {
 });
 
 app.get('/employee', (req, res) => {
-	res.render('employee');
+	res.render('employee/employee');
 });
 
 app.get('/enterNewEmployee', (req, res) => {
-	res.render('enterNewEmployee');
+	res.render('employee/enterNewEmployee');
 });
 
 app.get('/listEmployee', (req, res) => {
 	let employee = {};
 	employee = null;
-	res.render('listEmployee', {employee});
+	res.render('employee/listEmployee', {employee});
 });
 
 app.get('/listAllEmployees', async (req, res) => {
 	let filter = {};
 	let allUsers = await employeeSchema.find(filter);
-	res.render('listAllEmployees', {allUsers});
+	res.render('employee/listAllEmployees', {allUsers});
 });
 
 app.get('/editEmployee', (req, res) => {
 	let employee = {};
 	employee = null;
-	res.render('editEmployee', {employee});
+	res.render('employee/editEmployee', {employee});
 });
 
 app.get('/deleteEmployee', (req, res) => {
-	res.render('deleteEmployee');
+	res.render('employee/deleteEmployee');
 });
 
 
