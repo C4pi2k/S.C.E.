@@ -63,14 +63,16 @@ var upload = multer({ storage: storage });
 // 6 - Mongoose Models
 // var testModel = require('./model/test');
 var employeeSchema = require('./model/employee');
+var customerSchema = require('./model/customer');
 const { PRIORITY_ABOVE_NORMAL } = require('constants');
 const { json } = require('body-parser');
 
-// 7 - GET Methods
+//GET Methods
 app.get('/', (req, res) => {
 	res.render('welcome');
 });
 
+//EMPLOYEE START
 app.get('/employee', (req, res) => {
 	res.render('employee/employee');
 });
@@ -100,8 +102,40 @@ app.get('/editEmployee', (req, res) => {
 app.get('/deleteEmployee', (req, res) => {
 	res.render('employee/deleteEmployee');
 });
+//EMPLOYEE END
 
+//CUSTOMER START
+app.get('/customer', (req, res) => {
+	res.render('customer/customer');
+});
 
+app.get('/enterNewcustomer', (req, res) => {
+	res.render('customer/enterNewcustomer');
+});
+
+app.get('/listcustomer', (req, res) => {
+	let customer = {};
+	customer = null;
+	res.render('customer/listcustomer', {customer});
+});
+
+app.get('/listAllcustomers', async (req, res) => {
+	let filter = {};
+	let allCustomers = await customerSchema.find(filter);
+	res.render('customer/listAllcustomers', {allCustomers});
+});
+
+app.get('/editcustomer', (req, res) => {
+	let customer = {};
+	customer = null;
+	res.render('customer/editcustomer', {customer});
+});
+
+app.get('/deletecustomer', (req, res) => {
+	res.render('customer/deletecustomer');
+});
+//CUSTOMER END
+//-------------------------------------------------------------------------//
 // 8 - POST Methods
 app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 	
