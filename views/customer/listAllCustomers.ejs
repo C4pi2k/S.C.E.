@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/customer" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+
+    <% if(allCustomers != null) {%>
+
+        <% for(var i = 0; i < allCustomers.length; i++) {%>
+
+        <label style="font-size:x-large;">Customer <%= i + 1 %></label><br>
+
+        <label for="customId">CustomId</label><br>
+        <input readonly type="text" name="customId" value="<%= allCustomers[i].customId %>"><br><br> 
+            
+        <label for="salutation">Salutation</label><br>
+        <input readonly type="text" name="salutation" value="<%= allCustomers[i].salutation %>"><br><br>
+        
+        <label for="name">Name</label><br>
+        <input readonly type="text" name="name" value="<%= allCustomers[i].name %>"><br><br>
+        
+        <label for="surname">Surname</label><br>
+        <input readonly type="text" name="surname" value="<%= allCustomers[i].surname %>"><br><br>
+        
+        <label for="street">Street</label><br>
+        <input readonly type="text" name="street" value="<%= allCustomers[i].street %>"><br><br>
+        
+        <label for="street_number">Street Number</label><br>
+        <input readonly type="number" name="street_number" value="<%= allCustomers[i].street_number %>"><br><br>
+        
+        <label for="place">Place</label><br>
+        <input readonly type="text" name="place" value="<%= allCustomers[i].place %>"><br><br>
+        
+        <label for="plz">PLZ</label><br>
+        <input readonly type="number" name="plz" value="<%= allCustomers[i].plz %>"><br><br>
+
+        <label for="email">E-Mail</label><br>
+        <input readonly type="text" name="email" value="<%= allCustomers[i].email %>"><br><br>
+    
+        <label for="tel_number">Tel. Number</label><br>
+        <input readonly type="text" name="tel_number" value="<%= allCustomers[i].tel_number %>"><br><br>
+    
+        <label for="comment">Comment</label><br>
+        <input readonly type="text" name="comment" value="<%= allCustomers[i].comment %>"><br><br>
+    
+        <label for="company_suffix">Short Name</label><br>
+        <input readonly type="text" name="company_suffix" value="<%= allCustomers[i].company_suffix %>"><br><br>
+        <br><br><br><br>
+        <%  } %>
+    
+    <% } %>
+    
+</body>
+</html>
