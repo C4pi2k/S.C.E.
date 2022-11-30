@@ -194,18 +194,6 @@ app.post('/showEditableEmployee', async (req, res) => {
 	res.render('employee/editEmployee', {employee});
 });
 
-app.post('/deleteEmployee', async (req, res) => {
-	let id = req.body.employeeId;
-
-	// console.log(id);
-
-	let employee = await employeeSchema.deleteOne({customId: id});
-
-	console.log(employee);
-
-	res.redirect('/employee');
-});
-
 app.post('/showSingleEmployeeToEdit', async (req, res) => {
 	let id = req.body.employeeId;
 
@@ -261,6 +249,18 @@ app.post('/editEmployee', async (req, res) => {
 	// let employee = await employeeSchema.deleteOne({customId: id});
 
 	// console.log(employee);
+
+	res.redirect('/employee');
+});
+
+app.post('/deleteEmployee', async (req, res) => {
+	let id = req.body.employeeId;
+
+	// console.log(id);
+
+	let employee = await employeeSchema.deleteOne({customId: id});
+
+	console.log(employee);
 
 	res.redirect('/employee');
 });
