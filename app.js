@@ -160,10 +160,10 @@ app.get('/listAllproducts', async (req, res) => {
 	res.render('product/listAllproducts', {allProducts});
 });
 
-app.get('/editproduct', (req, res) => {
+app.get('/editProduct', (req, res) => {
 	let product = {};
 	product = null;
-	res.render('product/editproduct', {product});
+	res.render('product/editProduct', {product});
 });
 
 app.get('/deleteproduct', (req, res) => {
@@ -392,18 +392,9 @@ app.post('/editCustomer', async (req, res) => {
 		company_suffix: company_suffix
 	};
 
-	console.log(id);
-	console.log(name);
-
 	let updateCustomer = await customerSchema.findOneAndUpdate(filter, update, {
 		new: false
 	});
-
-	// console.log(id);
-
-	// let employee = await employeeSchema.deleteOne({customId: id});
-
-	// console.log(employee);
 
 	res.redirect('/customer');
 });
@@ -453,11 +444,51 @@ app.post('/showSingleProduct', async (req, res) => {
 
 	// console.log(id);
 
-	let product = await productSchema.findOne({productId: id});
+	let product = await productSchema.findOne({customId: id});
 
 	// console.log(customer);
 
 	res.render('product/listProduct', {product});
+});
+
+app.post('/showEditableProduct', async (req, res) => {
+	let id = req.body.productId;
+
+	let product = await productSchema.findOne({customId: id});
+
+	res.render('product/editProduct', {product});
+});
+
+app.post('/editProduct', async (req, res) => {
+
+	let id = req.body.productId;
+	let storage_location = req.body.storage_location;
+	let name = req.body.name;
+	let producer = req.body.producer;
+	let article_description = req.body.article_description;
+	let street_number = req.body.street_number;
+	let stock_amount = req.body.stock_amount;
+	let price = req.body.price;
+	let minimum_stock = req.body.minimum_stock;
+
+	let filter = { customId: id };
+
+	let update = { 
+		storage_location: storage_location,
+		name: name,
+		producer: producer,
+		article_description: article_description,
+		street_number: street_number,
+		stock_amount: stock_amount,
+		price: price,
+		minimum_stock: minimum_stock
+	};
+
+	let updateProduct = await productSchema.findOneAndUpdate(filter, update, {
+		new: false
+	});
+
+	res.redirect('/product');
 });
 
 // POST PRODUCT END
