@@ -154,10 +154,10 @@ app.get('/listproduct', (req, res) => {
 	res.render('product/listproduct', {product});
 });
 
-app.get('/listAllproduct', async (req, res) => {
+app.get('/listAllproducts', async (req, res) => {
 	let filter = {};
-	let allProduct = await productSchema.find(filter);
-	res.render('product/listAllproduct', {allProduct});
+	let allProducts = await productSchema.find(filter);
+	res.render('product/listAllproducts', {allProducts});
 });
 
 app.get('/editproduct', (req, res) => {
