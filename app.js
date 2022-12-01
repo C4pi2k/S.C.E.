@@ -151,7 +151,7 @@ app.get('/enterNewproduct', (req, res) => {
 app.get('/listproduct', (req, res) => {
 	let product = {};
 	product = null;
-	res.render('product/listproduct', {custproductomer});
+	res.render('product/listproduct', {product});
 });
 
 app.get('/listAllproduct', async (req, res) => {
@@ -446,6 +446,18 @@ app.post('/uploadNewProduct', upload.single('product'), (req, res) => {
 			res.redirect('/product');
 		}
 	})
+});
+
+app.post('/showSingleProduct', async (req, res) => {
+	let id = req.body.productId;
+
+	// console.log(id);
+
+	let product = await productSchema.findOne({productId: id});
+
+	// console.log(customer);
+
+	res.render('product/listProduct', {product});
 });
 
 // POST PRODUCT END
