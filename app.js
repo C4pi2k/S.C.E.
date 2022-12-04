@@ -166,7 +166,7 @@ app.get('/editProduct', (req, res) => {
 	res.render('product/editProduct', {product});
 });
 
-app.get('/deleteproduct', (req, res) => {
+app.get('/deleteProduct', (req, res) => {
 	res.render('product/deleteproduct');
 });
 // GET PRODUCT END
@@ -487,6 +487,18 @@ app.post('/editProduct', async (req, res) => {
 	let updateProduct = await productSchema.findOneAndUpdate(filter, update, {
 		new: false
 	});
+
+	res.redirect('/product');
+});
+
+app.post('/deleteProduct', async (req, res) => {
+	let id = req.body.productId;
+
+	// console.log(id);
+
+	let product = await productSchema.deleteOne({customId: id});
+
+	// console.log(product);
 
 	res.redirect('/product');
 });
