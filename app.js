@@ -160,6 +160,12 @@ app.get('/listAllproducts', async (req, res) => {
 	res.render('product/listAllproducts', {allProducts});
 });
 
+app.get('/listAllproductsLowStock', async (req, res) => {
+	let filter = {};
+	let allProducts = await productSchema.find(filter);
+	res.render('product/listAllproductsLowStock', {allProducts});
+});
+
 app.get('/editProduct', (req, res) => {
 	let product = {};
 	product = null;

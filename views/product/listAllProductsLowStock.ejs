@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/product" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+
+    <% if(allProducts != null) {%>
+
+        <% for(var i = 0; i < allProducts.length; i++) {%>
+
+            <% if(allProducts[i].stock_amount < allProducts[i].minimum_stock) { %>
+
+            
+                <label style="font-size:x-large;">Product <%= i + 1 %></label><br>
+            
+                <label for="customId">CustomId</label><br>
+                <input readonly type="text" name="customId" value="<%= allProducts[i].customId %>"><br><br> 
+            
+                <label for="storage_location">Storage Location</label><br>
+                <input readonly type="text" name="storage_location" value="<%= allProducts[i].storage_location %>"><br><br>
+            
+                <label for="name">Name</label><br>
+                <input readonly type="text" name="name" value="<%= allProducts[i].name %>"><br><br>
+            
+                <label for="producer">Producer</label><br>
+                <input readonly type="text" name="producer" value="<%= allProducts[i].producer %>"><br><br>
+            
+                <label for="article_description">Article Description</label><br>
+                <input readonly type="text" name="article_description" value="<%= allProducts[i].article_description %>"><br><br>
+            
+                <label for="stock_amount">Stock Amount</label><br>
+                <input readonly style="background-color: rgb(255, 60, 0);" type="Number" name="stock_amount" value="<%= allProducts[i].stock_amount %>"><br><br>
+        
+                <label for="price">Price</label><br>
+                <input readonly type="number" name="price" value="<%= allProducts[i].price %>"><br><br>
+        
+                <label for="minimum_stock">Minimum Stock</label><br>
+                <input readonly style="background-color: rgb(0, 212, 0);" type="number" name="minimum_stock" value="<%= allProducts[i].minimum_stock %>"><br><br>
+                <br><br><br><br>
+            <% } %>
+
+        <% } %>
+        
+    <% } %>
+        
+    </body>
+</html>
