@@ -80,8 +80,8 @@ app.get('/employee', (req, res) => {
 	res.render('employee/employee');
 });
 
-app.get('/enterNewEmployee', (req, res) => {
-	res.render('employee/enterNewEmployee');
+app.get('/createNewEmployee', (req, res) => {
+	res.render('employee/createNewEmployee');
 });
 
 app.get('/listEmployee', (req, res) => {
@@ -294,7 +294,7 @@ app.post('/deleteEmployee', async (req, res) => {
 //-------------------------------------------------------------------------//
 // POST CUSTOMER START
 
-app.post('/uploadNewCustomer', upload.single('customer'), (req, res) => {
+app.post('/createNewCustomer', upload.single('customer'), (req, res) => {
 	
 	var date = new Date();
 	var current_validity_date = new Date(date.setMonth(date.getMonth()+4));
