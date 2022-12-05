@@ -72,7 +72,7 @@ const { json } = require('body-parser');
 
 //GET Methods
 app.get('/', (req, res) => {
-	res.render('welcome');
+	res.render('overview');
 });
 
 // GET EMPLOYEE START
