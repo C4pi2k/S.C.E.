@@ -1,4 +1,5 @@
-# SIMPLE CRUD ERP
+# S.C.E.
+## SIMPLE CRUD ERP
 
 Simple CRUD Application for a school module, that has some sort of ERP functions
 
