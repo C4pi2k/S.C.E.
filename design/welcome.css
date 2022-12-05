@@ -19,42 +19,38 @@
 @keyframes bgcolor {
 
     0% {
-        background-color: #000000
-    }
-
-    10% {
         background-color: #2849db
     }
 
-    20% {
+    11% {
         background-color: #9426ee
     }
 
-    30% {
+    22% {
         background-color: #ff33f5
     }
 
-    40% {
+    33% {
         background-color: #ff3e3e
     }
 
-    50% {
+    44% {
         background-color: #ff8432
     }
 
-    60% {
+    55% {
         background-color: #fffc46
     }
 
-    70% {
+    66% {
         background-color: #59ff4a
     }
 
-    80% {
+    77% {
         background-color: #228d27
     }
 
-    90% {
+    88% {
         background-color: #2f9c93
     }
 
