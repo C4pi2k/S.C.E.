@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+        <form action="addProductToOrder" method="get">
+            <button>Create an order</button>
+        </form><br>
+        <form action="changeOrderItem" method="get">
+            <button>Change an order item</button>
+        </form><br>
+        <form action="removeOrderItem" method="get">
+            <button>Remove an order item</button>
+        </form><br>
+        <form action="listOrder" method="get">
+            <button>List an order</button>
+        </form><br>
+        <!-- Confirm Orders will only show orders, that have the status open-->
+        <form action="confirmOrder" method="get">
+            <button>Confirm an order</button>
+        </form><br>
+        <!-- Cancel Orders will only show orders, that have the status closed-->
+        <form action="cancelOrder" method="get"> 
+            <button>Cancel an order</button>
+        </form><br>
+        <form action="showAllOrders" method="get"> 
+            <button>Show all orders</button>
+        </form><br>
+        <form action="generateInvoice" method="get"> 
+            <button>Generate invoice</button>
+        </form><br>
+    </div>
+</body>
+</html>
