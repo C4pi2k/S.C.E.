@@ -65,6 +65,8 @@ var upload = multer({ storage: storage });
 var employeeSchema = require('./model/employee');
 var customerSchema = require('./model/customer');
 var productSchema = require('./model/product');
+var orderHeaderSchema = require('./model/orderHeader');
+var orderItemSchema = require('./model/orderItem');
 const { PRIORITY_ABOVE_NORMAL } = require('constants');
 const { json } = require('body-parser');
 
