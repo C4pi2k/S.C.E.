@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/product" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+        <form action="/showStorageStatistics" method="post">
+            <label>Get a storages' statistics by its location</label><br>
+            <input type="text" name="storageLocation"><br><br>
+            <button type="submit">Search</button><br><br>
+        </form>
+        <% if(storage != null) {%>
+
+            <h2>Total storage value <%= storageValue %></h2>
+            
+            <% for(var i = 0; i < storage.length; i++) { %>
+                    <label for="name">Name</label><br>
+                    <input readonly type="text" name="name" value="<%= storage[i].name %>"><br><br>
+                    
+                    <label for="stock_amount">Stock Amount</label><br>
+                    <input readonly type="number" name="stock_amount" value="<%= storage[i].stock_amount %>"><br><br>
+                    
+                    <label for="price">Price</label><br>
+                    <input readonly type="number" name="price" value="<%= storage[i].price %>"><br><br>
+                    
+                    <label for="minimum_stock">Minimum Stock</label><br>
+                    <input readonly type="number" name="minimum_stock" value="<%= storage[i].minimum_stock %>"><br><br>
+                    
+                    <hr>
+            <% } %>
+                    
+        <% } %>
+    </div>
+                    
+</body>
+</html>

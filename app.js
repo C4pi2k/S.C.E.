@@ -175,6 +175,12 @@ app.get('/editProduct', (req, res) => {
 app.get('/deleteProduct', (req, res) => {
 	res.render('product/deleteproduct');
 });
+
+app.get('/storageStatistics', (req, res) => {
+	let storage = {};
+	storage = null;
+	res.render('product/storageStatistics', {storage});
+});
 // GET PRODUCT END
 
 // 8 - POST Methods
@@ -500,13 +506,28 @@ app.post('/editProduct', async (req, res) => {
 app.post('/deleteProduct', async (req, res) => {
 	let id = req.body.productId;
 
-	// console.log(id);
-
 	let product = await productSchema.deleteOne({customId: id});
 
-	// console.log(product);
-
 	res.redirect('/product');
+});
+
+app.post('/showStorageStatistics', async (req, res) => {
+	let location = req.body.storageLocation;
+
+	let storage = await productSchema.find({storage_location: location});
+
+	let storageLength = storage.length;
+	let storageValue = 0;
+
+	for(let i = 0; i < storageLength; i++) {
+		productValue = storage[i].stock_amount * storage[i].price;
+		storageValue += productValue;
+	}
+
+	console.log(storageValue);
+	// console.log(storage);
+
+	res.render('product/storageStatistics', {storage: storage, storageValue: storageValue});
 });
 
 // POST PRODUCT END
