@@ -113,8 +113,8 @@ app.get('/customer', (req, res) => {
 	res.render('customer/customer');
 });
 
-app.get('/enterNewcustomer', (req, res) => {
-	res.render('customer/enterNewcustomer');
+app.get('/createNewcustomer', (req, res) => {
+	res.render('customer/createNewcustomer');
 });
 
 app.get('/listcustomer', (req, res) => {
@@ -187,7 +187,7 @@ app.get('/storageStatistics', (req, res) => {
 
 // 8 - POST Methods
 // POST EMPLOYEE START
-app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
+app.post('/createNewEmployee', upload.single('employee'), (req, res) => {
 	
 	var date = new Date();
 	var current_validity_date = new Date(date.setMonth(date.getMonth()+4));
