@@ -220,11 +220,7 @@ app.post('/uploadNewEmployee', upload.single('employee'), (req, res) => {
 app.post('/showSingleEmployee', async (req, res) => {
 	let id = req.body.employeeId;
 
-	// console.log(id);
-
 	let employee = await employeeSchema.findOne({customId: id});
-
-	console.log(employee);
 
 	res.render('employee/listEmployee', {employee});
 });
@@ -232,11 +228,7 @@ app.post('/showSingleEmployee', async (req, res) => {
 app.post('/showEditableEmployee', async (req, res) => {
 	let id = req.body.employeeId;
 
-	// console.log(id);
-
 	let employee = await employeeSchema.findOne({customId: id});
-
-	console.log(employee);
 
 	res.render('employee/editEmployee', {employee});
 });
@@ -244,11 +236,7 @@ app.post('/showEditableEmployee', async (req, res) => {
 app.post('/showSingleEmployeeToEdit', async (req, res) => {
 	let id = req.body.employeeId;
 
-	console.log(id);
-
 	let employee = await employeeSchema.findOne({customId: id});
-
-	// console.log(employee);
 
 	res.render('editEmployee', {employee});
 });
@@ -284,18 +272,9 @@ app.post('/editEmployee', async (req, res) => {
 		short_name: short_name
 	};
 
-	console.log(id);
-	console.log(name);
-
 	let updateEmployee = await employeeSchema.findOneAndUpdate(filter, update, {
 		new: false
 	});
-
-	// console.log(id);
-
-	// let employee = await employeeSchema.deleteOne({customId: id});
-
-	// console.log(employee);
 
 	res.redirect('/employee');
 });
@@ -303,11 +282,7 @@ app.post('/editEmployee', async (req, res) => {
 app.post('/deleteEmployee', async (req, res) => {
 	let id = req.body.employeeId;
 
-	// console.log(id);
-
 	let employee = await employeeSchema.deleteOne({customId: id});
-
-	console.log(employee);
 
 	res.redirect('/employee');
 });
@@ -352,11 +327,7 @@ app.post('/uploadNewCustomer', upload.single('customer'), (req, res) => {
 app.post('/showSingleCustomer', async (req, res) => {
 	let id = req.body.customerId;
 
-	// console.log(id);
-
 	let customer = await customerSchema.findOne({customId: id});
-
-	// console.log(customer);
 
 	res.render('customer/listCustomer', {customer});
 });
@@ -364,11 +335,7 @@ app.post('/showSingleCustomer', async (req, res) => {
 app.post('/showEditableCustomer', async (req, res) => {
 	let id = req.body.customerId;
 
-	// console.log(id);
-
 	let customer = await customerSchema.findOne({customId: id});
-
-	// console.log(customer);
 
 	res.render('customer/editCustomer', {customer});
 });
@@ -414,11 +381,7 @@ app.post('/editCustomer', async (req, res) => {
 app.post('/deleteCustomer', async (req, res) => {
 	let id = req.body.customerId;
 
-	// console.log(id);
-
 	let customer = await customerSchema.deleteOne({customId: id});
-
-	console.log(customer);
 
 	res.redirect('/customer');
 });
@@ -454,11 +417,7 @@ app.post('/uploadNewProduct', upload.single('product'), (req, res) => {
 app.post('/showSingleProduct', async (req, res) => {
 	let id = req.body.productId;
 
-	// console.log(id);
-
 	let product = await productSchema.findOne({customId: id});
-
-	// console.log(customer);
 
 	res.render('product/listProduct', {product});
 });
@@ -523,9 +482,6 @@ app.post('/showStorageStatistics', async (req, res) => {
 		productValue = storage[i].stock_amount * storage[i].price;
 		storageValue += productValue;
 	}
-
-	console.log(storageValue);
-	// console.log(storage);
 
 	res.render('product/storageStatistics', {storage: storage, storageValue: storageValue});
 });
