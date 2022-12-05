@@ -146,8 +146,8 @@ app.get('/product', (req, res) => {
 	res.render('product/product');
 });
 
-app.get('/enterNewproduct', (req, res) => {
-	res.render('product/enterNewproduct');
+app.get('/createNewProduct', (req, res) => {
+	res.render('product/createNewProduct');
 });
 
 app.get('/listproduct', (req, res) => {
@@ -393,7 +393,7 @@ app.post('/deleteCustomer', async (req, res) => {
 //-------------------------------------------------------------------------//
 // POST PRODUCT START
 
-app.post('/uploadNewProduct', upload.single('product'), (req, res) => {
+app.post('/createNewProduct', upload.single('product'), (req, res) => {
 	
 	let productObj = {
 		customId: req.body.customId,
