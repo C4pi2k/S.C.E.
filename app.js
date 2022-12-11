@@ -516,7 +516,7 @@ app.post('/createNewOrder', upload.single('orderHeader'), upload.single('orderIt
 		product_amount: req.body.product_amount 
 	}
 
-	let orderItemLength = Number(orderItem.customId.length);
+	let orderItemAmount = Number(req.body.itemAmount);
 
 	let transferOrderItem = {
 		customId: 0,
@@ -524,20 +524,32 @@ app.post('/createNewOrder', upload.single('orderHeader'), upload.single('orderIt
 		product_amount: 0
 	};
 
-	// Loop to create an array of orderItem-objects
-	for(let i = 0; i < orderItemLength; i++) {
-		transferOrderItem.customId = orderItem.customId[i];
-		transferOrderItem.productId = orderItem.productId[i];
-		transferOrderItem.product_amount = orderItem.product_amount[i];
-
+	if(orderItemAmount == 1) {
+	
+		transferOrderItem.customId = orderItem.customId;
+		transferOrderItem.productId = orderItem.productId;
+		transferOrderItem.product_amount = orderItem.product_amount;
+	
 		orderItemSchema.create(transferOrderItem, (err) => {
 			if(err) {
 				console.log(err);
 			} 
 		})
-	}
 
-	console.log(req.body.order_date);
+	} else {
+		for(let i = 0; i < orderItemAmount; i++) {
+	
+			transferOrderItem.customId = orderItem.customId[i];
+			transferOrderItem.productId = orderItem.productId[i];
+			transferOrderItem.product_amount = orderItem.product_amount[i];
+	
+			orderItemSchema.create(transferOrderItem, (err) => {
+				if(err) {
+					console.log(err);
+				} 
+			})
+		}
+	}
 
 	let orderHeader = {
 		customId: req.body.headerCustomId,
@@ -557,8 +569,8 @@ app.post('/createNewOrder', upload.single('orderHeader'), upload.single('orderIt
 });
 
 app.post('/addItem', (req, res) => {
-	
 	let itemAmount = 1;
+	
 	// use the '+' sign, to convert from text to number in JS
 	let viewItemAmount = +req.body.itemAmount;
 
