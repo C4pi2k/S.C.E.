@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/order" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="button_div">
+
+    <form action="createNewOrder" method="post">
+
+        <input hidden type="number" name="itemAmount" value="<%= itemAmount %>">
+
+        <label for="headerCustomId">Custom ID</label>
+        <input type="number" name="headerCustomId">
+
+        <label for="customerId">Customer ID</label>
+        <input type="number" name="customerId">
+
+        <label for="order_date">Order Date</label>
+        <input type="date" name="order_date">
+
+            <% for(let i = 0; i < itemAmount; i++) { %>
+                    <hr>
+                    <h3>Item Nr.<%= i + 1 %></h3>
+                
+                    <label for="itemCustomId">Custom ID</label>
+                    <input type="number" name="itemCustomId">
+                
+                    <label for="productId">Product ID</label>
+                    <input type="number" name="productId">
+                
+                    <label for="product_amount">Product Amount</label>
+                    <input type="number" name="product_amount">
+            <% } %>
+
+        <br><br>
+        <button type="submit">Create order</button>
+    </form><br> 
+    <form action="/addItem" method="post">
+        <input hidden type="number" name="itemAmount" value="<%= itemAmount %>">
+        <button type="submit">Add another item</button>
+    </form>
+    </div>
+</body>
+</html>

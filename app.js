@@ -184,7 +184,22 @@ app.get('/storageStatistics', (req, res) => {
 	res.render('product/storageStatistics', {storage});
 });
 // GET PRODUCT END
+//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
+// GET ORDER START
+app.get('/order', (req, res) => {
+	res.render('order/order')
+});
 
+app.get('/createNewOrder', (req, res) => {
+	let itemAmount = 1
+	res.render('order/createNewOrder', {itemAmount});
+});
+// GET ORDER END
+//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
 // 8 - POST Methods
 // POST EMPLOYEE START
 app.post('/createNewEmployee', upload.single('employee'), (req, res) => {
@@ -489,6 +504,70 @@ app.post('/showStorageStatistics', async (req, res) => {
 });
 
 // POST PRODUCT END
+//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------//
+// POST ORDER START
+
+app.post('/createNewOrder', upload.single('orderHeader'), upload.single('orderItem'), (req, res) => {
+
+	let orderItem = {
+		customId: req.body.itemCustomId,
+		productId: req.body.productId,
+		product_amount: req.body.product_amount 
+	}
+
+	let orderItemLength = Number(orderItem.customId.length);
+
+	let transferOrderItem = {
+		customId: 0,
+		productId: 0,
+		product_amount: 0
+	};
+
+	// Loop to create an array of orderItem-objects
+	for(let i = 0; i < orderItemLength; i++) {
+		transferOrderItem.customId = orderItem.customId[i];
+		transferOrderItem.productId = orderItem.productId[i];
+		transferOrderItem.product_amount = orderItem.product_amount[i];
+
+		orderItemSchema.create(transferOrderItem, (err) => {
+			if(err) {
+				console.log(err);
+			} 
+		})
+	}
+
+	console.log(req.body.order_date);
+
+	let orderHeader = {
+		customId: req.body.headerCustomId,
+		customerId: req.body.customerId,
+		order_date: req.body.order_date,
+		orderItemId: orderItem.customId,
+		state: "Active"
+	}
+
+	orderHeaderSchema.create(orderHeader, (err) => {
+		if(err){
+			console.log(err);
+		} else {
+			res.render('order/order');
+		}
+	})
+});
+
+app.post('/addItem', (req, res) => {
+	
+	let itemAmount = 1;
+	// use the '+' sign, to convert from text to number in JS
+	let viewItemAmount = +req.body.itemAmount;
+
+	itemAmount += viewItemAmount;
+
+	console.log(itemAmount);
+
+	res.render('order/createNewOrder', {itemAmount})
+});
 
 //Beispiel Auflistung einzeln / alle
 // app.post('/back', async (req, res) => {
