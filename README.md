@@ -9,3 +9,4 @@ Simple CRUD Application for a school module, that has some sort of ERP functions
 
 ## Bugs/Stories etc.
 * When creating an issue, create the name as followed (ModuleName + # + 2 digit year + 2 digit month + 2 digit day + numberofissue that day e.g. M226b#22121101)
+* If there is no ModuleName, use General
