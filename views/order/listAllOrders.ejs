@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+      <form action="/order" method="get">
+          <button type="submit">Back</button>
+      </form><br>
+
+      <% for(var i = 0; i < allOrderHeader.length; i++) { %>
+            
+            <label style="font-size:x-large;">Order <%= i + 1 %></label><br>
+                        
+            <label for="customId">CustomId</label><br>
+            <input readonly type="number" name="customId" value="<%= allOrderHeader[i].customId %>"><br>
+            
+            <label for="customerId">CustomerId</label><br>
+            <input readonly type="number" name="customerId" value="<%= allOrderHeader[i].customerId %>"><br>
+            
+            <label for="order_date">Order Date</label><br>
+            <input readonly type="date" name="order_date" value="<%= allOrderHeader[i].order_date %>"><br><br>
+            
+            <% for(var j = 0; j < allOrderItem.length; j++) { %>
+                  <% if(allOrderHeader[i].orderItemId.length == 1 && allOrderHeader[i].orderItemId.includes(allOrderItem[j].customId)) { %>
+                        
+                        <label for="customId">CustomId</label><br>
+                        <input readonly type="number" name="customId" value="<%= allOrderItem[j].customId %>"><br>
+                
+                        <label for="productId">ProductId</label><br>
+                        <input readonly type="number" name="productId" value="<%= allOrderItem[j].productId %>"><br>
+                    
+                        <label for="product_amount">Product Amount</label><br>
+                        <input readonly type="number" name="product_amount" value="<%= allOrderItem[j].product_amount %>"><br><br>
+                    
+                  <% } if(allOrderHeader[i].orderItemId.length != 1 && allOrderHeader[i].orderItemId.includes(allOrderItem[j].customId)) { %>
+                        
+                        <label for="customId">CustomId</label><br>
+                        <input readonly type="number" name="customId" value="<%= allOrderItem[j].customId %>"><br>
+                
+                        <label for="productId">ProductId</label><br>
+                        <input readonly type="number" name="productId" value="<%= allOrderItem[j].productId %>"><br>
+                    
+                        <label for="product_amount">Product Amount</label><br>
+                        <input readonly type="number" name="product_amount" value="<%= allOrderItem[j].product_amount %>"><br><br>
+                  
+                  <% } %>
+            <% } %> 
+            <hr>
+      <% } %>
+</body>
+</html>

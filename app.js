@@ -206,6 +206,13 @@ app.get('/listOrder', (req, res) => {
 	order = null;
 	res.render('order/listOrder', {order});
 });
+
+app.get('/listAllOrders', async (req, res) => {
+	let filter = {};
+	let allOrderHeader = await orderHeaderSchema.find(filter);
+	let allOrderItem = await orderItemSchema.find(filter);
+	res.render('order/listAllOrders', {allOrderHeader, allOrderItem});
+});
 // GET ORDER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
