@@ -71,6 +71,18 @@ const { json } = require('body-parser');
 
 //GET Methods
 app.get('/', (req, res) => {
+	res.render('welcome');
+});
+
+app.get('/login', (req, res) => {
+	res.render('login');
+});
+
+app.get('/register', (req, res) => {
+	res.render('/register');
+});
+
+app.get('/overview', (req, res) => {
 	res.render('overview');
 });
 
