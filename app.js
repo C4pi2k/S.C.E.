@@ -194,6 +194,12 @@ app.get('/createNewOrder', (req, res) => {
 	let itemAmount = 1
 	res.render('order/createNewOrder', {itemAmount});
 });
+
+app.get('/editOrder', (req, res) => {
+	let order = {};
+	order = null;
+	res.render('order/editOrder', {order});
+});
 // GET ORDER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
@@ -288,7 +294,7 @@ app.post('/editEmployee', async (req, res) => {
 		short_name: short_name
 	};
 
-	let updateEmployee = await employeeSchema.findOneAndUpdate(filter, update, {
+	await employeeSchema.findOneAndUpdate(filter, update, {
 		new: false
 	});
 
@@ -387,7 +393,7 @@ app.post('/editCustomer', async (req, res) => {
 		company_suffix: company_suffix
 	};
 
-	let updateCustomer = await customerSchema.findOneAndUpdate(filter, update, {
+	await customerSchema.findOneAndUpdate(filter, update, {
 		new: false
 	});
 
@@ -471,7 +477,7 @@ app.post('/editProduct', async (req, res) => {
 		minimum_stock: minimum_stock
 	};
 
-	let updateProduct = await productSchema.findOneAndUpdate(filter, update, {
+	await productSchema.findOneAndUpdate(filter, update, {
 		new: false
 	});
 
@@ -578,6 +584,84 @@ app.post('/addItem', (req, res) => {
 	console.log(itemAmount);
 
 	res.render('order/createNewOrder', {itemAmount})
+});
+
+app.post('/showEditableOrder', async (req, res) => {
+	let id = req.body.orderId;
+
+	let order = await orderHeaderSchema.findOne({customId: id});
+
+	let orderItemsId = order.orderItemId;
+
+	let orderItems = [];
+
+	for(let i = 0; i < orderItemsId.length; i++) {
+		let orderItem = await orderItemSchema.findOne({customId: orderItemsId[i]});
+		orderItems.push(orderItem);
+	}
+
+	res.render('order/editOrder', {order, orderItems});
+});
+
+app.post('/editOrder', async (req, res) => {
+
+	let headerId = req.body.orderHeaderId;
+	let customerId = req.body.customerId;
+	let order_date = req.body.order_date;
+
+	let headerFilter = { customId: headerId };
+
+	let headerUpdate = { 
+		customerId: customerId,
+		order_date: order_date
+	};
+
+	await orderHeaderSchema.findOneAndUpdate(headerFilter, headerUpdate, {
+		new: false
+	});
+
+	let orderItemAmount = req.body.productId.length;
+	let itemId = 0;
+	let productId = 0;
+	let product_amount = 0;
+	let itemFilter = {};
+	let itemUpdate = {};
+
+	if(Array.isArray(req.body.productId) == false) {
+		itemId = req.body.orderItemId;
+		productId = req.body.productId;
+		product_amount = req.body.product_amount;
+
+		itemFilter = {customId: itemId};
+
+		itemUpdate = {
+			productId: productId,
+			product_amount: product_amount
+		};
+
+		await orderItemSchema.findOneAndUpdate(itemFilter, itemUpdate, {
+			new: false
+		});
+	} else {
+		for(let i = 0; i < orderItemAmount; i++) {
+			itemId = req.body.orderItemId[i];
+			productId = req.body.productId[i];
+			product_amount = req.body.product_amount[i];
+	
+			itemFilter = {customId: itemId};
+	
+			itemUpdate = {
+				productId: productId,
+				product_amount: product_amount
+			};
+	
+			await orderItemSchema.findOneAndUpdate(itemFilter, itemUpdate, {
+				new: false
+			});
+		}
+	}
+
+	res.redirect('/order');
 });
 	
 // Schritt 9 - Den Server port setzen
