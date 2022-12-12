@@ -76,11 +76,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-	res.render('login');
+	res.render('login/login');
 });
 
 app.get('/register', (req, res) => {
-	res.render('/register');
+	res.render('register/register');
 });
 
 app.get('/overview', (req, res) => {
@@ -232,6 +232,9 @@ app.get('/listAllOrders', async (req, res) => {
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
 // 8 - POST Methods
+
+app.post('/register')
+
 // POST EMPLOYEE START
 app.post('/createNewEmployee', upload.single('employee'), (req, res) => {
 	
