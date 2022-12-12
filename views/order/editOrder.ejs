@@ -16,7 +16,7 @@
             <form action="/showEditableOrder" method="post">
                 <label>Search for an order by Id to edit its data</label><br>
                 <input type="number" name="orderId"><br><br>
-                <button type="submit">Search</button>
+                <button type="submit">Search</button><br><br>
             </form>
         <%}%>
 
@@ -24,7 +24,7 @@
             <form action="/showEditableOrder" method="post">
                 <label>Search for an order by Id to edit its data</label><br>
                 <input type="number" name="orderId" value="<%= order.customId%>"><br><br>
-                <button type="submit">Search</button>
+                <button type="submit">Search</button><br><br>
             </form>
         <%}%>
         
@@ -51,8 +51,6 @@
                 <input type="number" name="product_amount" value="<%= orderItems[i].product_amount %>"><br><br>
 
             <% } %>
-
-            <!-- TODO: INSERT MISSING FIELDS FOR HEADER AND ITEMS-->
             <button type="submit">Edit</button>
         </form>
         <% } %>
