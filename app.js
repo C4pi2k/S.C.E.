@@ -61,7 +61,6 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 // 6 - Mongoose Models
-// var testModel = require('./model/test');
 var employeeSchema = require('./model/employee');
 var customerSchema = require('./model/customer');
 var productSchema = require('./model/product');
