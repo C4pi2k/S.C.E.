@@ -200,6 +200,12 @@ app.get('/editOrder', (req, res) => {
 	order = null;
 	res.render('order/editOrder', {order});
 });
+
+app.get('/listOrder', (req, res) => {
+	let order = {};
+	order = null;
+	res.render('order/listOrder', {order});
+});
 // GET ORDER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
@@ -662,6 +668,23 @@ app.post('/editOrder', async (req, res) => {
 	}
 
 	res.redirect('/order');
+});
+
+app.post('/showSingleOrder', async (req, res) => {
+	let id = req.body.orderId;
+
+	let order = await orderHeaderSchema.findOne({customId: id});
+
+	let orderItemsId = order.orderItemId;
+
+	let orderItems = [];
+
+	for(let i = 0; i < orderItemsId.length; i++) {
+		let orderItem = await orderItemSchema.findOne({customId: orderItemsId[i]});
+		orderItems.push(orderItem);
+	}
+
+	res.render('order/listOrder', {order, orderItems});
 });
 	
 // Schritt 9 - Den Server port setzen
