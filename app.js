@@ -345,6 +345,16 @@ app.get('/listAllOrders', async (req, res) => {
 		res.render('order/listAllOrders', {allOrderHeader, allOrderItem});
 	}
 });
+
+app.get('/deleteOrderItem', async (req, res) => {
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let order = {};
+		order = null;
+		res.render('order/deleteOrderItem', {order});
+	}
+})
 // GET ORDER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
@@ -868,6 +878,78 @@ app.post('/showSingleOrder', async (req, res) => {
 	}
 
 	res.render('order/listOrder', {order, orderItems});
+});
+
+app.post('/showSingleOrderToDelete', async (req, res) => {
+	let id = req.body.orderId;
+
+	let order = await orderHeaderSchema.findOne({customId: id});
+
+	let orderItemsId = order.orderItemId;
+
+	let orderItems = [];
+
+	for(let i = 0; i < orderItemsId.length; i++) {
+		// console.log("loop 1 " + i);
+		let orderItem = await orderItemSchema.findOne({customId: orderItemsId[i]});
+		// console.log("loop 2 " + i);
+		// console.log(orderItem);
+		orderItems.push(orderItem);
+	}
+	// console.log(orderItemsId);
+	// console.log(orderItemsId.length);
+	// console.log(orderItems);
+
+	res.render('order/deleteOrderItem', {order, orderItems});
+});
+
+app.post('/deleteOrderItem', async (req, res) => {
+	let itemFilter = {
+		customId: Number(req.body.orderItemId)
+	}
+
+	await orderItemSchema.deleteOne(itemFilter);
+	
+	let headerFilter = {
+		customId: Number(req.body.orderId)
+	}
+
+	let changingHeader = await orderHeaderSchema.findOne(headerFilter);
+
+	let deletedItemId = req.body.orderItemId;
+
+	if(changingHeader.orderItemId.includes(deletedItemId)){
+		for(var i = 0; i < changingHeader.orderItemId.length; i++) {
+			if(changingHeader.orderItemId[i] == deletedItemId){
+				changingHeader.orderItemId.splice(i, 1);
+			}
+		}
+	}
+
+	let update = {
+		orderItemId: changingHeader.orderItemId
+	};
+
+	await orderHeaderSchema.findOneAndUpdate(headerFilter, update, {
+		new: false
+	});
+
+	let id = req.body.orderId;
+
+	let order = await orderHeaderSchema.findOne({customId: id});
+
+	let orderItemsId = order.orderItemId;
+
+	let orderItems = [];
+
+	for(let i = 0; i < orderItemsId.length; i++) {
+		let orderItem = await orderItemSchema.findOne({customId: orderItemsId[i]});
+		orderItems.push(orderItem);
+	}
+
+	res.render('order/deleteOrderItem', {order, orderItems});
+
+
 });
 	
 // Schritt 9 - Den Server port setzen

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+    <form action="/order" method="get">
+        <button type="submit">Back</button>
+    </form><br>
+    <div class="center">
+        <form action="/showSingleOrderToDelete" method="post">
+            <label>Search for an order by Id</label><br>
+            <input type="number" name="orderId"><br><br>
+            <button type="submit">Search</button><br><br>
+        </form>
+
+        <% if(order != null) {%>
+            <form action="deleteOrderItem" method="post">    
+                <input hidden type="number" name="orderId" value="<%= order.customId %>">
+                <input hidden type="number" name="orderHeaderId" value="<%= order.customId %>">
+        
+                <label for="customerId">CustomerId</label><br>
+                <input readonly type="number" name="customerId" value="<%= order.customerId %>"><br>
+        
+                <label for="order_date">Order Date</label><br>
+                <input readonly type="date" name="order_date" value="<%= order.order_date %>"><br><br>
+            </form>
+                
+            <% for(var i = 0; i < orderItems.length; i++) { %>
+    
+                <form action="deleteOrderItem" method="post">
+                    <hr>
+                    <%= console.log(orderItems.length) %>
+                    <%= console.log("EJS " + i) %>
+                    <input hidden type="number" name="orderId" value="<%= order.customId %>">
+                    <input hidden type="number" name="orderItemId" value="<%= orderItems[i].customId %>">
+                    
+                    <label for="productId">ProductId</label><br>
+                    <input readonly type="number" name="productId" value="<%= orderItems[i].productId %>"><br>
+        
+                    <label for="product_amount">Product Amount</label><br>
+                    <input readonly type="number" name="product_amount" value="<%= orderItems[i].product_amount %>"><br><br>
+    
+                    <button>Delete item</button><br>
+                </form>
+            <% } %>
+        <% } %>
+    </div>
+    
+</body>
+</html>
