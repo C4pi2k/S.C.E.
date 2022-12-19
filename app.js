@@ -76,6 +76,20 @@ app.get('/', (req, res) => {
 	res.render('welcome');
 });
 
+app.get('/unallowed', (req, res) => {
+	res.render('unallowed');
+})
+
+app.post('/emptyCookie', (req, res) => {
+	req.session.userId = null;
+	req.session.username = null;
+	req.session.password = null;
+	console.log(req.session.userId);
+	console.log(req.session.username);
+	console.log(req.session.password);
+	res.render('welcome');
+})
+
 app.get('/login', (req, res) => {
 	res.render('login/login');
 });
@@ -85,147 +99,251 @@ app.get('/register', (req, res) => {
 });
 
 app.get('/overview', (req, res) => {
-	res.render('overview');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('overview');
+	}
 });
 
 // GET EMPLOYEE START
 app.get('/employee', (req, res) => {
-	res.render('employee/employee');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('employee/employee');
+	}
 });
 
 app.get('/createNewEmployee', (req, res) => {
-	res.render('employee/createNewEmployee');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('employee/createNewEmployee');
+	}
 });
 
 app.get('/listEmployee', (req, res) => {
-	let employee = {};
-	employee = null;
-	res.render('employee/listEmployee', {employee});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let employee = {};
+		employee = null;
+		res.render('employee/listEmployee', {employee});
+	}
 });
 
 app.get('/listAllEmployees', async (req, res) => {
-	let filter = {};
-	let allUsers = await employeeSchema.find(filter);
-	res.render('employee/listAllEmployees', {allUsers});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let filter = {};
+		let allUsers = await employeeSchema.find(filter);
+		res.render('employee/listAllEmployees', {allUsers});
+	}
 });
 
 app.get('/editEmployee', (req, res) => {
-	let employee = {};
-	employee = null;
-	res.render('employee/editEmployee', {employee});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let employee = {};
+		employee = null;
+		res.render('employee/editEmployee', {employee});
+	}
 });
 
 app.get('/deleteEmployee', (req, res) => {
-	res.render('employee/deleteEmployee');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('employee/deleteEmployee');
+	}
 });
 // GET EMPLOYEE END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
 // GET CUSTOMER START
 app.get('/customer', (req, res) => {
-	res.render('customer/customer');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('customer/customer');
+	}
 });
 
 app.get('/createNewcustomer', (req, res) => {
-	res.render('customer/createNewcustomer');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {	
+		res.render('customer/createNewcustomer');
+	}
 });
 
 app.get('/listcustomer', (req, res) => {
-	let customer = {};
-	customer = null;
-	res.render('customer/listcustomer', {customer});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let customer = {};
+		customer = null;
+		res.render('customer/listcustomer', {customer});
+	}
 });
 
 app.get('/listAllcustomers', async (req, res) => {
-	let filter = {};
-	let allCustomers = await customerSchema.find(filter);
-	res.render('customer/listAllcustomers', {allCustomers});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let filter = {};
+		let allCustomers = await customerSchema.find(filter);
+		res.render('customer/listAllcustomers', {allCustomers});
+	}
 });
 
 app.get('/editcustomer', (req, res) => {
-	let customer = {};
-	customer = null;
-	res.render('customer/editcustomer', {customer});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let customer = {};
+		customer = null;
+		res.render('customer/editcustomer', {customer});
+	}
 });
 
 app.get('/deletecustomer', (req, res) => {
-	res.render('customer/deletecustomer');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('customer/deletecustomer');
+	}
 });
 // GET CUSTOMER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
 // GET PRODUCT START
 app.get('/product', (req, res) => {
-	res.render('product/product');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('product/product');
+	}
 });
 
 app.get('/createNewProduct', (req, res) => {
-	res.render('product/createNewProduct');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('product/createNewProduct');
+	}
 });
 
 app.get('/listproduct', (req, res) => {
-	let product = {};
-	product = null;
-	res.render('product/listproduct', {product});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let product = {};
+		product = null;
+		res.render('product/listproduct', {product});
+	}
 });
 
 app.get('/listAllproducts', async (req, res) => {
-	let filter = {};
-	let allProducts = await productSchema.find(filter);
-	res.render('product/listAllproducts', {allProducts});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let filter = {};
+		let allProducts = await productSchema.find(filter);
+		res.render('product/listAllproducts', {allProducts});
+	}
 });
 
 app.get('/listAllproductsLowStock', async (req, res) => {
-	let filter = {};
-	let allProducts = await productSchema.find(filter);
-	res.render('product/listAllproductsLowStock', {allProducts});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let filter = {};
+		let allProducts = await productSchema.find(filter);
+		res.render('product/listAllproductsLowStock', {allProducts});
+	}
 });
 
 app.get('/editProduct', (req, res) => {
-	let product = {};
-	product = null;
-	res.render('product/editProduct', {product});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let product = {};
+		product = null;
+		res.render('product/editProduct', {product});
+	}
 });
 
 app.get('/deleteProduct', (req, res) => {
-	res.render('product/deleteproduct');
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('product/deleteproduct');
+	}
 });
 
 app.get('/storageStatistics', (req, res) => {
-	let storage = {};
-	storage = null;
-	res.render('product/storageStatistics', {storage});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let storage = {};
+		storage = null;
+		res.render('product/storageStatistics', {storage});
+	}
 });
 // GET PRODUCT END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
 // GET ORDER START
 app.get('/order', (req, res) => {
-	res.render('order/order')
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		res.render('order/order');
+	}
 });
 
 app.get('/createNewOrder', (req, res) => {
-	let itemAmount = 1
-	res.render('order/createNewOrder', {itemAmount});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let itemAmount = 1
+		res.render('order/createNewOrder', {itemAmount});
+	}
 });
 
 app.get('/editOrder', (req, res) => {
-	let order = {};
-	order = null;
-	res.render('order/editOrder', {order});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let order = {};
+		order = null;
+		res.render('order/editOrder', {order});
+	}
 });
 
 app.get('/listOrder', (req, res) => {
-	let order = {};
-	order = null;
-	res.render('order/listOrder', {order});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let order = {};
+		order = null;
+		res.render('order/listOrder', {order});
+	}
 });
 
 app.get('/listAllOrders', async (req, res) => {
-	let filter = {};
-	let allOrderHeader = await orderHeaderSchema.find(filter);
-	let allOrderItem = await orderItemSchema.find(filter);
-	res.render('order/listAllOrders', {allOrderHeader, allOrderItem});
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let filter = {};
+		let allOrderHeader = await orderHeaderSchema.find(filter);
+		let allOrderItem = await orderItemSchema.find(filter);
+		res.render('order/listAllOrders', {allOrderHeader, allOrderItem});
+	}
 });
 // GET ORDER END
 //-------------------------------------------------------------------------//
