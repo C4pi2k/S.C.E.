@@ -69,6 +69,7 @@ var orderHeaderSchema = require('./model/orderHeader');
 var orderItemSchema = require('./model/orderItem');
 const { PRIORITY_ABOVE_NORMAL } = require('constants');
 const { json } = require('body-parser');
+const { connect } = require('http2');
 
 //GET Methods
 app.get('/', (req, res) => {
@@ -246,7 +247,35 @@ app.post('/register', upload.single('user'), (req, res) => {
 			res.redirect('/');
 		}
 	})
-})
+});
+
+app.post('/login', async (req, res) => {
+	let filter = {
+		username: req.body.username,
+		password: req.body.password
+	}
+
+	let foundUser = await userSchema.find(filter);
+
+	let foundUserCount = Number(foundUser.length);
+
+	if(foundUserCount == 1) {
+		req.session.userId = foundUser[0].id;
+		req.session.username = foundUser[0].username;
+		req.session.password = foundUser[0].password;
+		req.session.save(function (err) {
+			if(err) {
+				console.log(err);
+			} else {
+				res.redirect('/overview');
+			}
+		})
+
+	} else {
+
+	}
+
+});
 
 // POST EMPLOYEE START
 app.post('/createNewEmployee', upload.single('employee'), (req, res) => {
