@@ -802,8 +802,6 @@ app.post('/addItem', (req, res) => {
 
 	itemAmount += viewItemAmount;
 
-	console.log(itemAmount);
-
 	res.render('order/createNewOrder', {itemAmount})
 });
 
@@ -912,15 +910,9 @@ app.post('/showSingleOrderToDelete', async (req, res) => {
 	let orderItems = [];
 
 	for(let i = 0; i < orderItemsId.length; i++) {
-		// console.log("loop 1 " + i);
 		let orderItem = await orderItemSchema.findOne({customId: orderItemsId[i]});
-		// console.log("loop 2 " + i);
-		// console.log(orderItem);
 		orderItems.push(orderItem);
 	}
-	// console.log(orderItemsId);
-	// console.log(orderItemsId.length);
-	// console.log(orderItems);
 
 	res.render('order/deleteOrderItem', {order, orderItems});
 });
@@ -1011,16 +1003,13 @@ app.post('/confirmOrder', async (req, res) => {
 		});
 
 	} else {
-		let orderItemAmount = itemProductId.length;
-		console.log("OrderItemAmount " + orderItemAmount);
+		let orderItemAmount = itemProductId.length
 		for(let i = 0; i < orderItemAmount; i++) {
 			let productFilter = {
 				customId: itemProductId[i]
 			}
 
 			let productToUpdate = await productSchema.find(productFilter);
-			console.log("Updated Product");
-			console.log(productToUpdate);
 
 			let currentProductAmount = 0;
 			let amountToSubtract = Number(itemProduct_amount[i]);
@@ -1031,7 +1020,6 @@ app.post('/confirmOrder', async (req, res) => {
 
 			for(let j = 0; j < productToUpdate.length; j++) {
 				currentProductAmount = productToUpdate[j].stock_amount;
-				console.log("currenProductAmount " + currentProductAmount);
 				updatedProductAmount = currentProductAmount - amountToSubtract;
 				productUpdate.stock_amount = updatedProductAmount;
 				await productSchema.findOneAndUpdate(productFilter, productUpdate, {
@@ -1093,15 +1081,12 @@ app.post('/cancelOrder', async (req, res) => {
 
 	} else {
 		let orderItemAmount = itemProductId.length;
-		console.log("OrderItemAmount " + orderItemAmount);
 		for(let i = 0; i < orderItemAmount; i++) {
 			let productFilter = {
 				customId: itemProductId[i]
 			}
 
 			let productToUpdate = await productSchema.find(productFilter);
-			console.log("Updated Product");
-			console.log(productToUpdate);
 
 			let currentProductAmount = 0;
 			let amountToAdd = Number(itemProduct_amount[i]);
@@ -1112,7 +1097,6 @@ app.post('/cancelOrder', async (req, res) => {
 
 			for(let j = 0; j < productToUpdate.length; j++) {
 				currentProductAmount = productToUpdate[j].stock_amount;
-				console.log("currenProductAmount " + currentProductAmount);
 				updatedProductAmount = currentProductAmount + amountToAdd;
 				productUpdate.stock_amount = updatedProductAmount;
 				await productSchema.findOneAndUpdate(productFilter, productUpdate, {
