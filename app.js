@@ -233,7 +233,20 @@ app.get('/listAllOrders', async (req, res) => {
 //-------------------------------------------------------------------------//
 // 8 - POST Methods
 
-app.post('/register')
+app.post('/register', upload.single('user'), (req, res) => {
+	let userObj = {
+		username: req.body.username,
+		password: req.body.password
+	}
+
+	userSchema.create(userObj, (err) => {
+		if(err) {
+			console.log(err);
+		} else {
+			res.redirect('/');
+		}
+	})
+})
 
 // POST EMPLOYEE START
 app.post('/createNewEmployee', upload.single('employee'), (req, res) => {
