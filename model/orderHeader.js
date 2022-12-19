@@ -5,7 +5,7 @@ var orderHeaderSchema = new mongoose.Schema({
       customerId: Number,
       order_date: String,
       orderItemId: [Number],
-      // The state is to determine in what state the order is (Active, Inactive, Cancelled)
+      // The state is to determine in what state the order is (Active, Confirmed, Cancelled)
       state: String
 })
 
