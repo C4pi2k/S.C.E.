@@ -366,6 +366,17 @@ app.get('/confirmOrder', async (req, res) => {
 		res.render('order/confirmOrder', {allOrderHeader, allOrderItem});
 	}
 });
+
+app.get('/cancelOrder', async (req, res) => {
+	if(req.session.userId == null) {
+		res.redirect('unallowed');
+	} else {
+		let filter = {};
+		let allOrderHeader = await orderHeaderSchema.find(filter);
+		let allOrderItem = await orderItemSchema.find(filter);
+		res.render('order/cancelOrder', {allOrderHeader, allOrderItem});
+	}
+});
 // GET ORDER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
@@ -962,24 +973,16 @@ app.post('/deleteOrderItem', async (req, res) => {
 });
 
 app.post('/confirmOrder', async (req, res) => {
-	// TODO: Get all order items. 
-	// TODO: For every oder item get its product number and the amount. 
-	let itemCustomId = req.body.itemCustomId;
 	let itemProductId = req.body.itemProductId;
 	let itemProduct_amount = req.body.itemProduct_amount;
 	let orderId = req.body.orderId;
-	console.log("orderId");
-	console.log(orderId);
 
-	// TODO: Find the product with the product number, subtract the amount from 
-	// the item stock and update the product.
 	if(Array.isArray(itemProductId) == false) {
 		let productFilter = {
 			customId: itemProductId
 		}
 		
-		// let updatedProduct = await productSchema.find(productFilter);
-		// console.log(updatedProduct);
+		let updatedProduct = await productSchema.find(productFilter);
 		
 		let currentProductAmount = 0;
 		let amountToSubtract = Number(itemProduct_amount);
@@ -992,9 +995,9 @@ app.post('/confirmOrder', async (req, res) => {
 			currentProductAmount = updatedProduct[i].stock_amount;
 			updatedProductAmount = currentProductAmount - amountToSubtract;
 			productUpdate.stock_amount = updatedProductAmount;
-			// await productSchema.findOneAndUpdate(productFilter, productUpdate, {
-			// 		new: false
-			// });
+			await productSchema.findOneAndUpdate(productFilter, productUpdate, {
+					new: false
+			});
 		}
 			
 		let orderHeaderFilter = {
@@ -1003,9 +1006,9 @@ app.post('/confirmOrder', async (req, res) => {
 		let orderHeaderUpdate = {
 			state: "Confirmed"
 		}
-		// await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
-		// 	new: false
-		// });
+		await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
+			new: false
+		});
 
 	} else {
 		let orderItemAmount = itemProductId.length;
@@ -1041,6 +1044,87 @@ app.post('/confirmOrder', async (req, res) => {
 			}
 			let orderHeaderUpdate = {
 				state: "Confirmed"
+			}
+			await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
+				new: false
+			});
+		}
+	}
+	res.render('order/order');
+});
+
+app.post('/cancelOrder', async (req, res) => {
+	let itemProductId = req.body.itemProductId;
+	let itemProduct_amount = req.body.itemProduct_amount;
+	let orderId = req.body.orderId;
+
+	if(Array.isArray(itemProductId) == false) {
+		let productFilter = {
+			customId: itemProductId
+		}
+		
+		let updatedProduct = await productSchema.find(productFilter);
+		
+		let currentProductAmount = 0;
+		let amountToAdd = Number(itemProduct_amount);
+		let updatedProductAmount = 0;
+		let productUpdate = {
+			stock_amount: 0
+		};
+		
+		for(let i = 0; i < updatedProduct.length; i++) {
+			currentProductAmount = updatedProduct[i].stock_amount;
+			updatedProductAmount = currentProductAmount + amountToAdd;
+			productUpdate.stock_amount = updatedProductAmount;
+			await productSchema.findOneAndUpdate(productFilter, productUpdate, {
+					new: false
+			});
+		}
+			
+		let orderHeaderFilter = {
+			customId: orderId
+		}
+		let orderHeaderUpdate = {
+			state: "Active"
+		}
+		await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
+			new: false
+		});
+
+	} else {
+		let orderItemAmount = itemProductId.length;
+		console.log("OrderItemAmount " + orderItemAmount);
+		for(let i = 0; i < orderItemAmount; i++) {
+			let productFilter = {
+				customId: itemProductId[i]
+			}
+
+			let productToUpdate = await productSchema.find(productFilter);
+			console.log("Updated Product");
+			console.log(productToUpdate);
+
+			let currentProductAmount = 0;
+			let amountToAdd = Number(itemProduct_amount[i]);
+			let updatedProductAmount = 0;
+			let productUpdate = {
+				stock_amount: 0
+			};
+
+			for(let j = 0; j < productToUpdate.length; j++) {
+				currentProductAmount = productToUpdate[j].stock_amount;
+				console.log("currenProductAmount " + currentProductAmount);
+				updatedProductAmount = currentProductAmount + amountToAdd;
+				productUpdate.stock_amount = updatedProductAmount;
+				await productSchema.findOneAndUpdate(productFilter, productUpdate, {
+						new: false
+				});
+			}
+
+			let orderHeaderFilter = {
+				customId: orderId[i]
+			}
+			let orderHeaderUpdate = {
+				state: "Active"
 			}
 			await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
 				new: false

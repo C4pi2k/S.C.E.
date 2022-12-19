@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+	<link rel="stylesheet" href="/design/welcome.css">
+</head>
+<body>
+      <form action="/order" method="get">
+          <button type="submit">Back</button>
+      </form><br>
+
+      <% for(var i = 0; i < allOrderHeader.length; i++) { %>
+            <% if(allOrderHeader[i].state == "Confirmed") { %>
+                    <form action="cancelOrder" method="post">
+                  
+                        <label style="font-size:x-large;">Order</label><br>
+                        
+                        <label for="headerCustomId">CustomId</label><br>
+                        <input readonly type="number" name="headerCustomId" value="<%= allOrderHeader[i].customId %>"><br>
+            
+                        <label for="headerCustomerId">CustomerId</label><br>
+                        <input readonly type="number" name="headerCustomerId" value="<%= allOrderHeader[i].customerId %>"><br>
+            
+                        <label for="headerOrder_date">Order Date</label><br>
+                        <input readonly type="date" name="headerOrder_date" value="<%= allOrderHeader[i].order_date %>"><br><br>
+            
+                        <% for(var j = 0; j < allOrderItem.length; j++) { %>
+                              <% if(allOrderHeader[i].orderItemId.length == 1 && allOrderHeader[i].orderItemId.includes(allOrderItem[j].customId)) { %>
+                                    <input hidden type="number" name="orderId" value="<%= allOrderHeader[i].customId %>">
+                              
+                                    <label for="itemCustomId">CustomId</label><br>
+                                    <input readonly type="number" name="itemCustomId" value="<%= allOrderItem[j].customId %>"><br>
+                
+                                    <label for="itemProductId">ProductId</label><br>
+                                    <input readonly type="number" name="itemProductId" value="<%= allOrderItem[j].productId %>"><br>
+                    
+                                    <label for="itemProduct_amount">Product Amount</label><br>
+                                    <input readonly type="number" name="itemProduct_amount" value="<%= allOrderItem[j].product_amount %>"><br><br>
+                    
+                              <% } if(allOrderHeader[i].orderItemId.length != 1 && allOrderHeader[i].orderItemId.includes(allOrderItem[j].customId)) { %>
+                                    <input hidden type="number" name="orderId" value="<%= allOrderHeader[i].customId %>">
+                              
+                                    <label for="itemCustomId">CustomId</label><br>
+                                    <input readonly type="number" name="itemCustomId" value="<%= allOrderItem[j].customId %>"><br>
+                
+                                    <label for="itemProductId">ProductId</label><br>
+                                    <input readonly type="number" name="itemProductId" value="<%= allOrderItem[j].productId %>"><br>
+                    
+                                    <label for="itemProduct_amount">Product Amount</label><br>
+                                    <input readonly type="number" name="itemProduct_amount" value="<%= allOrderItem[j].product_amount %>"><br><br>
+                  
+                              <% } %>
+                        <% } %> 
+                        <button>Cancel Order</button>
+                        <hr>    
+            <% } %>
+                    </form>
+      <% } %>
+</body>
+</html>
