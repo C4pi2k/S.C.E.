@@ -15,10 +15,6 @@ var fs = require('fs');
 var path = require('path');
 require('dotenv/config');
 
-//totp stuff
-const cookieSettings = {maxAge: 60000, httpOnly: true, sameSite: 'lax'};
-var secret = "";
-
 const algorithm = "SHA-1";
 const digits = 6;
 const period = 30;
@@ -453,9 +449,6 @@ app.post('/2FA', async (req, res) => {
                 res.redirect('/overview');
             }
         }
-        // //if the credentials provided are incorrect it will create a cookie and redirects the user back to the loginpage
-        // res.cookie('error',JSON.stringify({type: 'invalidToken', message: 'Your token is invalid'}),cookieSettings);
-        // res.redirect('/login');
     });
 });
 
