@@ -8,13 +8,20 @@ var MongoStore = require('connect-mongo');
 var mongoose = require('mongoose');
 var cookie = express();
 var app = express();
+let totp = require('totp-generator');
+let helper = require('./helper');
 
 var fs = require('fs');
 var path = require('path');
 require('dotenv/config');
 
 //totp stuff
+const cookieSettings = {maxAge: 60000, httpOnly: true, sameSite: 'lax'};
 var secret = "";
+
+const algorithm = "SHA-1";
+const digits = 6;
+const period = 30;
 
 app.use(express.static(__dirname));
 
@@ -23,10 +30,15 @@ app.use(cookieParser());
 
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(session({
-	secret: bcrypt.genSaltSync(10),
+	secret: helper.createRandomBase32String(10),
 	resave: false,
-	saveUninitialized: true,
-	cookie: { MaxAge: oneDay },
+	saveUninitialized: false,
+	cookie: 
+	{ 
+		MaxAge: oneDay,
+		httpOnly: true,
+		sameSite: 'lax'
+	},
 	store: MongoStore.create({mongoUrl: 'mongodb+srv://dbUser:mongodbUser@cluster0.ph492ws.mongodb.net/test'})
 }));
 
@@ -94,8 +106,16 @@ app.get('/login', (req, res) => {
 	res.render('login/login');
 });
 
+app.get('/2FA', (req, res) => {
+	res.render('login/2FA');
+});
+
 app.get('/register', (req, res) => {
 	res.render('register/register');
+});
+
+app.get('/QR', (req, res) => {
+	res.render('register/QR');
 });
 
 app.get('/overview', (req, res) => {
@@ -384,47 +404,59 @@ app.get('/cancelOrder', async (req, res) => {
 //-------------------------------------------------------------------------//
 // 8 - POST Methods
 
-app.post('/register', upload.single('user'), (req, res) => {
+app.post('/register', upload.single('user'), async (req, res) => {
+
+	
+	let salt = bcrypt.genSaltSync(10);
+	let hash = bcrypt.hashSync(req.body.password,salt,10);
+
+	let tfaKey = helper.createRandomBase32String(20).toUpperCase();
+
 	let userObj = {
 		username: req.body.username,
-		password: req.body.password
+		password: hash,
+		salt : salt,
+		createdAt: new Date(),
+		tfaKey : tfaKey
 	}
 
-	userSchema.create(userObj, (err) => {
-		if(err) {
-			console.log(err);
-		} else {
-			res.redirect('/');
-		}
-	})
+	let newUser = await userSchema.create(userObj);
+
+	req.session.userId = newUser.id;
+	req.session.tfaKey = tfaKey;
+	res.render('register/QR', {qrCodeUrl: helper.generateQRCodeUrl(req.session.tfaKey,algorithm,digits,period)});
+
 });
 
 app.post('/login', async (req, res) => {
 	let filter = {
-		username: req.body.username,
-		password: req.body.password
+		username: req.body.username
 	}
+	userSchema.findOne(filter, (err,item) => {
+		if(err){
+			console.log(err);
+		} else if(bcrypt.compareSync(req.body.password, item.password)) {
+			req.session.userId = item.id;
+			res.redirect('/2FA');
+		}
+	})
+});
 
-	let foundUser = await userSchema.find(filter);
-
-	let foundUserCount = Number(foundUser.length);
-
-	if(foundUserCount == 1) {
-		req.session.userId = foundUser[0].id;
-		req.session.username = foundUser[0].username;
-		req.session.password = foundUser[0].password;
-		req.session.save(function (err) {
-			if(err) {
-				console.log(err);
-			} else {
-				res.redirect('/overview');
-			}
-		})
-
-	} else {
-
-	}
-
+app.post('/2FA', async (req, res) => {
+    userSchema.findById(req.session.userId, (err,item) => {
+        if(err) {
+            console.log(err);
+        }
+        else if (item !== null) {
+            if(req.body.tfaToken == totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period})) {
+                req.session.tfaKey = item.tfaKey;                
+                res.redirect('/overview');
+            }
+        }
+        // //if the credentials provided are incorrect it will create a cookie and redirects the user back to the loginpage
+        // res.cookie('error',JSON.stringify({type: 'invalidToken', message: 'Your token is invalid'}),cookieSettings);
+        // res.redirect('/login');
+    });
 });
 
 // POST EMPLOYEE START
@@ -1077,6 +1109,64 @@ app.post('/cancelOrder', async (req, res) => {
 		}
 		await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
 			new: false
+		});
+
+	} else {
+		let orderItemAmount = itemProductId.length;
+		for(let i = 0; i < orderItemAmount; i++) {
+			let productFilter = {
+				customId: itemProductId[i]
+			}
+
+			let productToUpdate = await productSchema.find(productFilter);
+
+			let currentProductAmount = 0;
+			let amountToAdd = Number(itemProduct_amount[i]);
+			let updatedProductAmount = 0;
+			let productUpdate = {
+				stock_amount: 0
+			};
+
+			for(let j = 0; j < productToUpdate.length; j++) {
+				currentProductAmount = productToUpdate[j].stock_amount;
+				updatedProductAmount = currentProductAmount + amountToAdd;
+				productUpdate.stock_amount = updatedProductAmount;
+				await productSchema.findOneAndUpdate(productFilter, productUpdate, {
+						new: false
+				});
+			}
+
+			let orderHeaderFilter = {
+				customId: orderId[i]
+			}
+			let orderHeaderUpdate = {
+				state: "Active"
+			}
+			await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
+				new: false
+			});
+		}
+	}
+	res.render('order/order');
+});
+
+app.post('/deleteOrder', async (req, res) => {
+	let itemProductId = req.body.itemProductId;
+	let itemProduct_amount = req.body.itemProduct_amount;
+	let orderId = req.body.Id;
+
+	if(Array.isArray(itemProductId) == false) {
+		// TODO: Get all orderitem (id's) from the header to delete them
+		
+		// TODO: Delete the orderheader of the deleted orderitems
+		let orderHeaderFilter = {
+			customId: orderId
+		}
+		let orderHeaderUpdate = {
+			state: "Active"
+		}
+		await orderHeaderSchema.findByIdAndDelete(orderHeaderFilter, function (err) {
+			
 		});
 
 	} else {
