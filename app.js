@@ -440,11 +440,12 @@ app.post('/login', async (req, res) => {
 
 app.post('/2FA', async (req, res) => {
     userSchema.findById(req.session.userId, (err,item) => {
-        if(err) {
-            console.log(err);
+		if(err) {
+			console.log(err);
         }
         else if (item !== null) {
-            if(req.body.tfaToken == totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period})) {
+			console.log(totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period}));
+			if(req.body.tfaToken == totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period})) {
                 req.session.tfaKey = item.tfaKey;                
                 res.redirect('/overview');
             }
