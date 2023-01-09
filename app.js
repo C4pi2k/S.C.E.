@@ -108,7 +108,8 @@ app.get('/2FA', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-	res.render('register/register');
+	let errorMessage = null;
+	res.render('register/register', {errorMessage: errorMessage});
 });
 
 app.get('/QR', (req, res) => {
@@ -396,6 +397,10 @@ app.get('/cancelOrder', async (req, res) => {
 		res.render('order/cancelOrder', {allOrderHeader, allOrderItem});
 	}
 });
+
+app.get('/deleteOrder', async (req, res) => {
+
+});
 // GET ORDER END
 //-------------------------------------------------------------------------//
 //-------------------------------------------------------------------------//
@@ -411,18 +416,24 @@ app.post('/register', upload.single('user'), async (req, res) => {
 
 	let tfaKey = helper.createRandomBase32String(20).toUpperCase();
 
-	let userObj = {
-		username: req.body.username,
-		password: hash,
-		salt : salt,
-		createdAt: new Date(),
-		tfaKey : tfaKey
-	}
+	validation = validatePassword(req.body.password);
 
-	let newUser = await userSchema.create(userObj);
+	if(!validation.isSuccess) {
+		let errorMessage = validation.errorMessage;
+		res.render('register/register', {errorMessage: errorMessage});
+	} else {
+		let userObj = {
+			username: req.body.username,
+			password: hash,
+			salt : salt,
+			createdAt: new Date(),
+			tfaKey : tfaKey
+		}
 	
-	res.render('register/QR', {qrCodeUrl: helper.generateQRCodeUrl(req.session.tfaKey,algorithm,digits,period)});
-
+		let newUser = await userSchema.create(userObj);
+		
+		res.render('register/QR', {qrCodeUrl: helper.generateQRCodeUrl(req.session.tfaKey,algorithm,digits,period)});
+	}
 });
 
 app.post('/login', async (req, res) => {
@@ -1147,63 +1158,98 @@ app.post('/cancelOrder', async (req, res) => {
 	res.render('order/order');
 });
 
-app.post('/deleteOrder', async (req, res) => {
-	let itemProductId = req.body.itemProductId;
-	let itemProduct_amount = req.body.itemProduct_amount;
-	let orderId = req.body.Id;
+// app.post('/deleteOrder', async (req, res) => {
+// 	let itemProductId = req.body.itemProductId;
+// 	let itemProduct_amount = req.body.itemProduct_amount;
+// 	let orderId = req.body.Id;
 
-	if(Array.isArray(itemProductId) == false) {
-		// TODO: Get all orderitem (id's) from the header to delete them
+// 	if(Array.isArray(itemProductId) == false) {
+// 		// TODO: Get all orderitem (id's) from the header to delete them
 		
-		// TODO: Delete the orderheader of the deleted orderitems
-		let orderHeaderFilter = {
-			customId: orderId
-		}
-		let orderHeaderUpdate = {
-			state: "Active"
-		}
-		await orderHeaderSchema.findByIdAndDelete(orderHeaderFilter, function (err) {
+// 		// TODO: Delete the orderheader of the deleted orderitems
+// 		let orderHeaderFilter = {
+// 			customId: orderId
+// 		}
+// 		let orderHeaderUpdate = {
+// 			state: "Active"
+// 		}
+// 		await orderHeaderSchema.findByIdAndDelete(orderHeaderFilter, function (err) {
 			
-		});
+// 		});
 
-	} else {
-		let orderItemAmount = itemProductId.length;
-		for(let i = 0; i < orderItemAmount; i++) {
-			let productFilter = {
-				customId: itemProductId[i]
-			}
+// 	} else {
+// 		let orderItemAmount = itemProductId.length;
+// 		for(let i = 0; i < orderItemAmount; i++) {
+// 			let productFilter = {
+// 				customId: itemProductId[i]
+// 			}
 
-			let productToUpdate = await productSchema.find(productFilter);
+// 			let productToUpdate = await productSchema.find(productFilter);
 
-			let currentProductAmount = 0;
-			let amountToAdd = Number(itemProduct_amount[i]);
-			let updatedProductAmount = 0;
-			let productUpdate = {
-				stock_amount: 0
-			};
+// 			let currentProductAmount = 0;
+// 			let amountToAdd = Number(itemProduct_amount[i]);
+// 			let updatedProductAmount = 0;
+// 			let productUpdate = {
+// 				stock_amount: 0
+// 			};
 
-			for(let j = 0; j < productToUpdate.length; j++) {
-				currentProductAmount = productToUpdate[j].stock_amount;
-				updatedProductAmount = currentProductAmount + amountToAdd;
-				productUpdate.stock_amount = updatedProductAmount;
-				await productSchema.findOneAndUpdate(productFilter, productUpdate, {
-						new: false
-				});
-			}
+// 			for(let j = 0; j < productToUpdate.length; j++) {
+// 				currentProductAmount = productToUpdate[j].stock_amount;
+// 				updatedProductAmount = currentProductAmount + amountToAdd;
+// 				productUpdate.stock_amount = updatedProductAmount;
+// 				await productSchema.findOneAndUpdate(productFilter, productUpdate, {
+// 						new: false
+// 				});
+// 			}
 
-			let orderHeaderFilter = {
-				customId: orderId[i]
-			}
-			let orderHeaderUpdate = {
-				state: "Active"
-			}
-			await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
-				new: false
-			});
-		}
+// 			let orderHeaderFilter = {
+// 				customId: orderId[i]
+// 			}
+// 			let orderHeaderUpdate = {
+// 				state: "Active"
+// 			}
+// 			await orderHeaderSchema.findOneAndUpdate(orderHeaderFilter, orderHeaderUpdate, {
+// 				new: false
+// 			});
+// 		}
+// 	}
+// 	res.render('order/order');
+// });
+
+function validatePassword(password) {
+	let returnObject = {isSuccess: false};
+
+	if(password.length<14)
+	{
+	    returnObject.errorMessage = 'Password must be at least 14 characters long';
 	}
-	res.render('order/order');
-});
+	//checks if the password contains at least one letter
+	else if(password.search(/[a-z]/i)<0)
+	{
+	    returnObject.errorMessage = 'Password must contain at least one letter';
+	}
+	//checks if the password contains at least one uppercase letter
+	else if(password.search(/[A-Z]/i)<0)
+	{
+	    returnObject.errorMessage = 'Password must contain at least one uppercase letter';
+	}
+	//checks if the password contains at least one number
+	else if(password.search(/[0-9]/)<0)
+	{
+	    returnObject.errorMessage = 'Password must contain at least one number';
+	}
+	//checks if the password conains at least one special character
+	else if(password.search(/[^A-Za-z0-9]/)<0)
+	{
+	    returnObject.errorMessage = 'Password must contain at least one special character';
+	}
+	else
+	{
+	    returnObject.isSuccess = true;
+	}
+	return returnObject;
+
+}
 	
 // Schritt 9 - Den Server port setzen
 				var port = process.env.PORT || '3000'

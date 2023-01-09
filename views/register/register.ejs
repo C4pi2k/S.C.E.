@@ -18,7 +18,11 @@
                   <br>
                   <label for="password">Password</label><br>
                   <input type="password" name="password" placeholder="Password"><br>
-                  <br><br>
+                  <br>
+                  <% if (errorMessage != null) { %> 
+                        <label readonly type="text" name="errorMessage" size="35" ><%= errorMessage %></label><br>
+                  <% } %>
+                  <br>
                   <button>Register</button>
             </form>
       </div>
