@@ -6,6 +6,8 @@ var userSchema = new mongoose.Schema({
       salt: String,
       createdAt: Date,
       tfaKey: String,
+      // roles 'standard' and 'special'. changed on database.
+      role: String
 })
 
 module.exports = new mongoose.model('user', userSchema);

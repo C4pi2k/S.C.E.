@@ -19,6 +19,7 @@ const algorithm = "SHA-1";
 const digits = 6;
 const period = 30;
 let xssprotection = false;
+let role = null;
 
 app.use(express.static(__dirname));
 
@@ -119,18 +120,26 @@ app.get('/QR', (req, res) => {
 });
 
 app.get('/overview', (req, res) => {
-	console.log(this.xssprotection);
-	console.log("overview");
-	if(this.xssprotection == true) {
+	console.log('overview001');
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
-		res.render('overview');
+		res.render('overview', {role: this.role});
+	}
+});
+
+app.get('/special', (req, res) => {
+	console.log('001');
+	if(this.xssprotection == false) {
+		res.redirect('unallowed');
+	} else {
+		res.render('special/special');
 	}
 });
 
 // GET EMPLOYEE START
 app.get('/employee', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('employee/employee');
@@ -138,7 +147,7 @@ app.get('/employee', (req, res) => {
 });
 
 app.get('/createNewEmployee', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('employee/createNewEmployee');
@@ -146,7 +155,7 @@ app.get('/createNewEmployee', (req, res) => {
 });
 
 app.get('/listEmployee', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let employee = {};
@@ -156,7 +165,7 @@ app.get('/listEmployee', (req, res) => {
 });
 
 app.get('/listAllEmployees', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -166,7 +175,7 @@ app.get('/listAllEmployees', async (req, res) => {
 });
 
 app.get('/editEmployee', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let employee = {};
@@ -176,7 +185,7 @@ app.get('/editEmployee', (req, res) => {
 });
 
 app.get('/deleteEmployee', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('employee/deleteEmployee');
@@ -187,7 +196,7 @@ app.get('/deleteEmployee', (req, res) => {
 //-------------------------------------------------------------------------//
 // GET CUSTOMER START
 app.get('/customer', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('customer/customer');
@@ -195,7 +204,7 @@ app.get('/customer', (req, res) => {
 });
 
 app.get('/createNewcustomer', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {	
 		res.render('customer/createNewcustomer');
@@ -203,7 +212,7 @@ app.get('/createNewcustomer', (req, res) => {
 });
 
 app.get('/listcustomer', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let customer = {};
@@ -213,7 +222,7 @@ app.get('/listcustomer', (req, res) => {
 });
 
 app.get('/listAllcustomers', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -223,7 +232,7 @@ app.get('/listAllcustomers', async (req, res) => {
 });
 
 app.get('/editcustomer', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let customer = {};
@@ -233,7 +242,7 @@ app.get('/editcustomer', (req, res) => {
 });
 
 app.get('/deletecustomer', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('customer/deletecustomer');
@@ -244,7 +253,7 @@ app.get('/deletecustomer', (req, res) => {
 //-------------------------------------------------------------------------//
 // GET PRODUCT START
 app.get('/product', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('product/product');
@@ -252,7 +261,7 @@ app.get('/product', (req, res) => {
 });
 
 app.get('/createNewProduct', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('product/createNewProduct');
@@ -260,7 +269,7 @@ app.get('/createNewProduct', (req, res) => {
 });
 
 app.get('/listproduct', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let product = {};
@@ -270,7 +279,7 @@ app.get('/listproduct', (req, res) => {
 });
 
 app.get('/listAllproducts', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -280,7 +289,7 @@ app.get('/listAllproducts', async (req, res) => {
 });
 
 app.get('/listAllproductsLowStock', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -290,7 +299,7 @@ app.get('/listAllproductsLowStock', async (req, res) => {
 });
 
 app.get('/editProduct', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let product = {};
@@ -300,7 +309,7 @@ app.get('/editProduct', (req, res) => {
 });
 
 app.get('/deleteProduct', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('product/deleteproduct');
@@ -308,7 +317,7 @@ app.get('/deleteProduct', (req, res) => {
 });
 
 app.get('/storageStatistics', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let storage = {};
@@ -321,7 +330,7 @@ app.get('/storageStatistics', (req, res) => {
 //-------------------------------------------------------------------------//
 // GET ORDER START
 app.get('/order', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		res.render('order/order');
@@ -329,7 +338,7 @@ app.get('/order', (req, res) => {
 });
 
 app.get('/createNewOrder', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let itemAmount = 1
@@ -338,7 +347,7 @@ app.get('/createNewOrder', (req, res) => {
 });
 
 app.get('/editOrder', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let order = {};
@@ -348,7 +357,7 @@ app.get('/editOrder', (req, res) => {
 });
 
 app.get('/listOrder', (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let order = {};
@@ -358,7 +367,7 @@ app.get('/listOrder', (req, res) => {
 });
 
 app.get('/listAllOrders', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -369,7 +378,7 @@ app.get('/listAllOrders', async (req, res) => {
 });
 
 app.get('/deleteOrderItem', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let order = {};
@@ -379,7 +388,7 @@ app.get('/deleteOrderItem', async (req, res) => {
 });
 
 app.get('/confirmOrder', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -390,7 +399,7 @@ app.get('/confirmOrder', async (req, res) => {
 });
 
 app.get('/cancelOrder', async (req, res) => {
-	if(this.xssprotection == true) {
+	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
 		let filter = {};
@@ -429,7 +438,8 @@ app.post('/register', upload.single('user'), async (req, res) => {
 			password: hash,
 			salt : salt,
 			createdAt: new Date(),
-			tfaKey : tfaKey
+			tfaKey : tfaKey,
+			role: 'standard'
 		}
 	
 		let newUser = await userSchema.create(userObj);
@@ -453,6 +463,7 @@ app.post('/login', async (req, res) => {
 			if(bcrypt.compareSync(req.body.password, item.password)) {
 				req.session.userId = item.id;
 				req.session.tfaKey = item.tfaKey;
+				this.role = item.role;
 				res.redirect('/2FA');
 			}
 		} else {
@@ -468,11 +479,10 @@ app.post('/2FA', async (req, res) => {
 			console.log(err);
         }
         else if (item !== null) {
-			console.log(item);
-			console.log(totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period}));
 			if(req.body.tfaToken == totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period})) {
                 req.session.tfaKey = item.tfaKey;
-				xssprotection = true;
+				req.session.role = item.role;
+				this.xssprotection = true;
                 res.redirect('/overview');
             } else {
 				let errorMessage = 'Invalid token';

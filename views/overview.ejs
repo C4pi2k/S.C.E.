@@ -25,6 +25,12 @@
 		<form action="order" method="get">
 			<button>Order</button>
 		</form>
+		<% if (role == 'special') { %>
+			<br>
+			<form action="special" method="get">
+				<button>Secret</button>
+			</form>
+		<% } %>
 	</div>
 </body>
 </html>
