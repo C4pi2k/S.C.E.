@@ -120,7 +120,6 @@ app.get('/QR', (req, res) => {
 });
 
 app.get('/overview', (req, res) => {
-	console.log('overview001');
 	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
@@ -129,7 +128,6 @@ app.get('/overview', (req, res) => {
 });
 
 app.get('/special', (req, res) => {
-	console.log('001');
 	if(this.xssprotection == false) {
 		res.redirect('unallowed');
 	} else {
