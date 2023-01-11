@@ -105,7 +105,8 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/2FA', (req, res) => {
-	res.render('login/2FA');
+	let errorMessage = null;
+	res.render('login/2FA', {errorMessage: errorMessage});
 });
 
 app.get('/register', (req, res) => {
@@ -471,9 +472,12 @@ app.post('/2FA', async (req, res) => {
 			console.log(totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period}));
 			if(req.body.tfaToken == totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period})) {
                 req.session.tfaKey = item.tfaKey;
-				xssprotection = true;          
+				xssprotection = true;
                 res.redirect('/overview');
-            }
+            } else {
+				let errorMessage = 'Invalid token';
+				res.render('login/2FA', {errorMessage: errorMessage});
+			}
         }
     });
 });

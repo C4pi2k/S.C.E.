@@ -9,7 +9,11 @@
 <body>
     <form action="2FA" method="post">
         <label for="username">Authentification Token:</label><br><br>
-        <input required type="text" id="tfaToken" name="tfaToken" placeholder="Enter Authentification Token"><br><br>
+        <input required type="text" id="tfaToken" name="tfaToken" placeholder="Enter Authentification Token"><br>
+        <br>
+        <% if (errorMessage != null) { %> 
+              <label readonly type="text" name="errorMessage" size="35" ><%= errorMessage %></label><br><br>
+        <% } %>
         <button>Validate Token</button>
     </form>
 </body>
