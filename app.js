@@ -100,7 +100,8 @@ app.post('/emptyCookie', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-	res.render('login/login');
+	let errorMessage = null;
+	res.render('login/login', {errorMessage: errorMessage});
 });
 
 app.get('/2FA', (req, res) => {
@@ -444,10 +445,18 @@ app.post('/login', async (req, res) => {
 	userSchema.findOne(filter, (err,item) => {
 		if(err){
 			console.log(err);
-		} else if(bcrypt.compareSync(req.body.password, item.password)) {
-			req.session.userId = item.id;
-			req.session.tfaKey = item.tfaKey;
-			res.redirect('/2FA');
+			let errorMessage = 'No user found with these credentials'
+			res.render('login/login', {errorMessage: errorMessage});
+		} 
+		if(item != null) {
+			if(bcrypt.compareSync(req.body.password, item.password)) {
+				req.session.userId = item.id;
+				req.session.tfaKey = item.tfaKey;
+				res.redirect('/2FA');
+			}
+		} else {
+			let errorMessage = 'No user found with these credentials'
+			res.render('login/login', {errorMessage: errorMessage});
 		}
 	})
 });
