@@ -432,8 +432,9 @@ app.post('/register', upload.single('user'), async (req, res) => {
 	
 		let newUser = await userSchema.create(userObj);
 		
-		res.render('register/QR', {qrCodeUrl: helper.generateQRCodeUrl(req.session.tfaKey,algorithm,digits,period)});
+		res.render('register/QR', {qrCodeUrl: helper.generateQRCodeUrl(tfaKey,algorithm,digits,period)});
 	}
+
 });
 
 app.post('/login', async (req, res) => {
@@ -457,6 +458,7 @@ app.post('/2FA', async (req, res) => {
 			console.log(err);
         }
         else if (item !== null) {
+			console.log(item);
 			console.log(totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period}));
 			if(req.body.tfaToken == totp(item.tfaKey, {algorithm: algorithm, digits: digits, period: period})) {
                 req.session.tfaKey = item.tfaKey;
