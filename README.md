@@ -4,7 +4,8 @@
 Simple CRUD Application for a school module, that has some sort of ERP functions
 
 ## Important informations about the application
-* CustomIds are not unique (yet)!!!
+* Documentations and so on are to found in the Admin directory
+* CustomIds are not unique!!!
 * CustomIds for testing purposes start with a 8 e.g. 81, 89, 810 (exception is 8 itself)
 
 ## Bugs/Stories etc.
